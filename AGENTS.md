@@ -25,6 +25,7 @@ Local checkout folder may remain `/Users/stanislav/Documents/Repos/images-codex`
 - Public starter values must stay generic. Put author-specific names, handles, promises, revenue claims, and voice rules into the local setup only.
 - Do not let per-post frontmatter, temporary topic labels, or template defaults replace the shared header/footer chrome.
 - Topic-specific labels belong inside slide content or visuals, not in the global header/footer.
+- Do not run a cover mood chooser or custom cover brainstorm in public onboarding. Photo covers with the author use only the `outdoor-editorial-arrow` pattern: low-angle blue sky, person upper-right, orange arrow/geometry, renderer text on top. `cover` is only an alias for that preset.
 
 ## Slide Meaning
 

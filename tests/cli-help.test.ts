@@ -12,6 +12,8 @@ describe("Qlepa CLI help", () => {
     expect(help).toContain("build <post-path> --watch");
     expect(help).toContain("preview <post-path>");
     expect(help).toContain("gen-photo <preset> <scene>");
+    expect(help).toContain("gen-photo cover <scene>");
+    expect(help).toContain("cover = outdoor-editorial-arrow");
     expect(help).toContain("onboard");
     expect(help).toContain("doctor");
     expect(help).toContain("render-test");

@@ -8,6 +8,7 @@ import {
   writeImageCacheMetadata,
 } from "../lib/image-cache.ts";
 import { buildImageGenerationPlan } from "../lib/image-gen.ts";
+import { normalizePromptPreset } from "../lib/photo-cover.ts";
 
 export type GenPhotoArgs = {
   preset: string;
@@ -20,7 +21,9 @@ export function parseGenPhotoArgs(args: readonly string[]): GenPhotoArgs {
   const [preset, scene, ...rest] = args;
 
   if (!preset || !scene) {
-    throw new Error("Usage: pnpm carousel gen-photo <preset> <scene> [--wardrobe <text>] [--no-wait]");
+    throw new Error(
+      "Usage: pnpm carousel gen-photo cover <scene> [--wardrobe <text>] [--no-wait] (or <preset> for internal scenes)",
+    );
   }
 
   let wardrobe = "casual editorial outfit";
@@ -47,7 +50,7 @@ export function parseGenPhotoArgs(args: readonly string[]): GenPhotoArgs {
     throw new Error(`Unknown gen-photo option: ${item}`);
   }
 
-  return { preset, scene, wardrobe, waitForFile };
+  return { preset: normalizePromptPreset(preset), scene, wardrobe, waitForFile };
 }
 
 export async function runGenPhotoCommand(

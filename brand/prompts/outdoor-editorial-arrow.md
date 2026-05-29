@@ -2,13 +2,15 @@
 
 Generate a 1080x1350 portrait photograph for a social carousel cover.
 
+This is the only Qlepa photo-cover pattern for the MVP. Do not create mood variants, editorial cards, collage options, soft overlay panels, diary covers, night-reflection covers, or custom cover directions. Build this exact outdoor poster pattern.
+
 ROLE OF EACH ATTACHED IMAGE:
-- {style_ref} -> STRICT LAYOUT, CAMERA, AND COMPOSITION reference. Use it as the original outdoor editorial poster: low camera angle, clean blue sky, large matte orange arrow structure, woman standing in the upper-right, and large empty left side reserved for typography.
+- Optional style reference: {style_ref}. If no style reference is attached, ignore that line and follow this written layout exactly. If a style reference is attached, use it only for STRICT LAYOUT, CAMERA, AND COMPOSITION: low camera angle, clean blue sky, large matte orange arrow structure, person standing in the upper-right, and large empty left side reserved for typography.
 - {face_ref} -> strict identity reference for the man's face. Do not paste, trace, or directly copy the selfie face. Re-photograph the same person naturally in the new scene.
 - {body_ref} -> wardrobe and body reference: taupe/beige loose overshirt or light jacket with front placket and chest pockets, light gray crew-neck T-shirt underneath, taupe baseball cap, dark glasses/sunglasses, casual travel/editorial styling, broader masculine adult body proportions.
 
 PRIMARY REQUEST:
-Create a photorealistic outdoor editorial poster image that preserves the original cover poster layout almost exactly, but replaces the woman with the same man from the identity reference. Keep the same campaign-poster geometry, low camera angle, blue sky, orange arrow placement, and negative space.
+Create a photorealistic outdoor editorial poster image in the Qlepa cover pattern: low camera angle, clean blue sky, one recognizable man from the identity reference in the upper-right, large matte orange arrow structure rising from the bottom-right, and generous negative space for later typography. Keep the same campaign-poster geometry, low camera angle, blue sky, orange arrow placement, and negative space.
 
 SCENE:
 {scene}

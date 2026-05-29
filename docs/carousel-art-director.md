@@ -32,6 +32,7 @@ If the task includes visual references, first use the reference-driven visual pi
 5. **visual direction**
    - Define the visual metaphor for this post.
    - List forbidden reuse from prior work.
+   - For the first slide with the author's photo, do not choose a mood or custom cover direction. Use only the `outdoor-editorial-arrow` photo-cover pattern.
    - Decide when a slide needs a real/generated image, a generated scene, a diagram, a product-like screen, an artifact, a field note, an assembly rig, a semantic selector, or a command surface.
    - Set scene cadence by semantic need and deck rhythm, not by a fixed every-N-slides rule.
    - If the source or user gives a user-specified visual rhythm, such as infographic / generated image alternation, record it in the post frontmatter and honor it unless it makes a slide less clear.

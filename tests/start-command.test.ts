@@ -21,6 +21,8 @@ describe("start command", () => {
     expect(text).toContain("фото лица");
     expect(text).toContain("фото по пояс или в полный рост");
     expect(text).toContain("или напишите: без моего фото");
+    expect(text).toContain("без выбора настроения обложки");
+    expect(text).toContain("outdoor-editorial-arrow");
     expect(text).toContain("Если хотите начать работу, напишите в чат: старт");
     expect(text).toContain("/start, start, старт");
     expect(text).not.toContain("Пришлите идею поста или черновик текста");

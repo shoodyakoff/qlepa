@@ -12,7 +12,7 @@ The public repo contains:
 
 The public repo must not contain:
 
-- real face/body reference photos, when the user chooses a cover mode with their photo;
+- real face/body reference photos for the author's photo-cover;
 - generated photo cache entries;
 - final carousel PNG outputs;
 - private draft posts unless the author chooses to publish them.
@@ -39,7 +39,7 @@ After a successful install-only request, the final agent response should not sta
 Готово. Если хотите начать работу, напишите в чат: старт.
 ```
 
-For chat UX, `/start`, `start`, and `старт` are the same onboarding intent. The agent should answer in Russian, avoid exposing internal skill/workflow/tool names, and after `READY TO RUN` explain that this is only repository technical readiness. It must collect the brand name, public handle, Telegram/publication channel, audience, tone of voice, cover mode, face photo, waist/full-body photo or an explicit `без моего фото` answer before asking for a post idea.
+For chat UX, `/start`, `start`, and `старт` are the same onboarding intent. The agent should answer in Russian, avoid exposing internal skill/workflow/tool names, and after `READY TO RUN` explain that this is only repository technical readiness. It must collect the brand name, public handle, Telegram/publication channel, audience, tone of voice, face photo, waist/full-body photo for the single `outdoor-editorial-arrow` photo-cover pattern or an explicit `без моего фото` answer before asking for a post idea.
 
 ## Private Inputs
 
@@ -52,6 +52,8 @@ assets/face-refs/style.jpg
 ```
 
 `style.jpg` is optional. The folder is ignored by git except for its README.
+
+If the person sends DNG, HEIC, or another raw format, the agent should export working JPG copies into the paths above. Do not commit the raw originals or the JPG copies.
 
 Brand data lives in:
 
@@ -80,8 +82,10 @@ Copy it to a private `posts/<date-slug>/post.md` folder or edit the example dire
 Image preparation is semi-automatic. Generated files in `assets/generated/` are source images for a cover or slide, not the final rendered cover:
 
 ```bash
-npm run carousel -- gen-photo editorial "creator at a clean desk reviewing carousel thumbnails" --no-wait
+npm run carousel -- gen-photo cover "low-angle outdoor poster, clean blue sky, person in the upper-right, large matte orange arrow structure" --no-wait
 ```
+
+`cover` is an alias for `outdoor-editorial-arrow`, the only supported photo-cover pattern for the MVP. Do not add a mood picker, custom cover brainstorm, or alternate photo-cover styles for public onboarding. Other prompt presets are for internal slide scenes, not cover mood options.
 
 The command prints:
 

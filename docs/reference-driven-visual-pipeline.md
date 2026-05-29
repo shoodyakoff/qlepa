@@ -25,6 +25,8 @@ Create an ignored analysis note before writing `post.md`. Extract:
 
 Do not copy exact illustrations, characters, jokes, logos, or layouts. Convert references into reusable decision rules.
 
+Photo-cover exception: Qlepa does not use a mood picker for the first slide. When the cover uses the author's photo, use only the `outdoor-editorial-arrow` pattern: low camera angle, clean blue sky, person in the upper-right, orange arrow/geometry, and empty space for renderer typography. Color references can influence brand tokens later, but they do not create alternate cover moods.
+
 ## 3. Source-To-Visual Routing
 
 For every slide, choose a route before choosing a template:
@@ -53,6 +55,8 @@ These fields feed the quality gate before preview/build planning. They are not c
 Объекты в generated scene выбираются из смысла слайда, а не из случайного декоративного набора. Сначала зафиксируйте `reader-pain`, `mechanism`, `visual-route` и `visual-reason`; затем задайте `visual.template`, `visual.primary`, нужные `modules`/`metrics`/`outcomes` и только после этого формулируйте английский `scene` для `gen-photo`.
 
 Стиль выбирается через prompt preset в `brand/prompts/<preset>.md`, необязательный `assets/face-refs/style.jpg`, wardrobe/style directives и конкретные слова в scene. Персона, робот, оператор или критик появляются только когда это следует из route/brief/prompt. Qlepa не выбирает робота автоматически и не восстанавливает локальную сгенерированную картинку из одного `post.md`.
+
+Для фото-обложки с человеком preset не выбирается по настроению: используйте `cover`, он нормализуется в `outdoor-editorial-arrow`. Другие presets нужны для внутренних generated scenes, когда slide brief этого требует.
 
 ## 4. Scene Cadence
 

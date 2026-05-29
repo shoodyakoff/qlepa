@@ -27,13 +27,22 @@ describe("gen-photo command", () => {
     });
   });
 
+  it("maps the public cover alias to the only photo-cover preset", () => {
+    expect(parseGenPhotoArgs(["cover", "low angle blue sky"])).toEqual({
+      preset: "outdoor-editorial-arrow",
+      scene: "low angle blue sky",
+      wardrobe: "casual editorial outfit",
+      waitForFile: true,
+    });
+  });
+
   it("prints cache miss instructions without waiting in no-wait mode", async () => {
     const dir = await makeTempDir();
     await mkdir(path.join(dir, "brand/prompts"), { recursive: true });
     await mkdir(path.join(dir, "assets/generated"), { recursive: true });
     await mkdir(path.join(dir, "assets/face-refs"), { recursive: true });
     await writeFile(
-      path.join(dir, "brand/prompts/editorial.md"),
+      path.join(dir, "brand/prompts/outdoor-editorial-arrow.md"),
       "Generate {scene} with {wardrobe}. Refs: {face_ref}, {body_ref}",
     );
     await writeFile(path.join(dir, "assets/face-refs/face.jpg"), "face");
@@ -45,7 +54,7 @@ describe("gen-photo command", () => {
         "--experimental-strip-types",
         path.join(process.cwd(), "src/cli.ts"),
         "gen-photo",
-        "editorial",
+        "cover",
         "blue sky",
         "--wardrobe",
         "taupe overshirt",

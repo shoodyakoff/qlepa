@@ -66,15 +66,17 @@ describe("image prompt builder", () => {
   it("keeps the outdoor arrow preset strict about preserving the original poster layout", async () => {
     const plan = await buildImageGenerationPlan({
       projectRoot: process.cwd(),
-      preset: "outdoor-editorial-arrow",
+      preset: "cover",
       scene: "low-angle blue sky with orange arrow structure",
       wardrobe: "taupe overshirt, gray t-shirt, cap, glasses",
       waitForFile: false,
     });
 
+    expect(plan.preset).toBe("outdoor-editorial-arrow");
     expect(plan.finalPrompt).toContain("STRICT LAYOUT, CAMERA, AND COMPOSITION");
     expect(plan.finalPrompt).toContain("left 55% of the image must remain mostly clean blue sky");
-    expect(plan.finalPrompt).toContain("replaces the woman with the same man");
+    expect(plan.finalPrompt).toContain("This is the only Qlepa photo-cover pattern for the MVP");
+    expect(plan.finalPrompt).toContain("If no style reference is attached, ignore that line and follow this written layout");
     expect(plan.finalPrompt).toContain("Do not make the person fill the whole image");
     expect(plan.finalPrompt).not.toContain("standing confidently in the low-angle blue-sky scene");
   });

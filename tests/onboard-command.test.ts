@@ -13,12 +13,13 @@ describe("onboard command", () => {
     expect(text).toContain("имя или название бренда");
     expect(text).toContain("ссылка на ТГ-канал");
     expect(text).toContain("тон и voice");
-    expect(text).toContain("режим обложки");
     expect(text).toContain("фото лица");
     expect(text).toContain("фото в полный рост");
     expect(text).toContain("или напишите: без моего фото");
+    expect(text).toContain("без выбора настроения обложки");
+    expect(text).toContain("outdoor-editorial-arrow");
     expect(text).toContain("Лицо и тело не нужны");
-    expect(text).toContain("картинку-референс стиля");
+    expect(text).toContain("картинку-референс композиции");
     expect(text).toContain("Агент сохранит приватные файлы");
     expect(text).toContain("Локальные шрифты лучше не менять");
     expect(text).toContain("posts/starter-post/post.md");
@@ -30,5 +31,6 @@ describe("onboard command", () => {
     expect(text).toContain("assets/face-refs/face.jpg");
     expect(text).toContain("npm run start");
     expect(text).not.toContain("Пришлите идею поста или черновик текста");
+    expect(text).not.toContain("Выберите настроение обложки");
   });
 });

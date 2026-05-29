@@ -17,6 +17,8 @@ describe("public onboarding docs", () => {
     expect(chatOnboarding).toContain("не значит, что Qlepa знает бренд, tone of voice, ТГ-канал или фото");
     expect(chatOnboarding).toContain("фото лица");
     expect(chatOnboarding).toContain("фото по пояс или в полный рост");
+    expect(chatOnboarding).toContain("не выбирайте настроение обложки");
+    expect(chatOnboarding).toContain("outdoor-editorial-arrow");
     expect(chatOnboarding).not.toMatch(/superpowers/iu);
   });
 
@@ -37,6 +39,8 @@ describe("public onboarding docs", () => {
 
     expect(readme).toContain("Новый человек не получит эти локальные PNG из git");
     expect(readme).toContain("робот не выбирается Qlepa автоматически");
+    expect(readme).toContain("Фото-обложка Qlepa не выбирается по настроению");
+    expect(readme).toContain("outdoor-editorial-arrow");
     expect(generatedReadme).toContain("не часть публичного репозитория");
     expect(visualPipeline).toContain("Объекты в generated scene выбираются");
     expect(visualPipeline).toContain("Стиль выбирается");

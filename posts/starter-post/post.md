@@ -9,9 +9,9 @@ brand: default
 title: "How I turn one idea into a carousel"
 subtitle: "A local workflow for draft, preview, and export"
 photo:
-  preset: editorial
-  scene: "creator at a clean desk reviewing a notebook with carousel thumbnails, warm daylight, editorial portrait"
-  wardrobe: "minimal casual outfit, neutral colors"
+  preset: outdoor-editorial-arrow
+  scene: "low-angle outdoor poster, clean blue sky, person in the upper-right, large matte orange arrow structure, generous negative space for typography"
+  wardrobe: "neutral overshirt, light t-shirt, cap, dark glasses, casual editorial outfit"
 
 ## slide-text
 heading: "Start with one clear pain"

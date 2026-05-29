@@ -113,7 +113,11 @@ async function checkOptionalFile(projectRoot: string, relativePath: string, labe
     return { status: "PASS", label, detail: relativePath };
   }
 
-  return { status: "WARN", label, detail: `add ${relativePath} only for cover mode with your photo` };
+  if (relativePath.endsWith("style.jpg")) {
+    return { status: "WARN", label, detail: `${relativePath} is optional composition reference` };
+  }
+
+  return { status: "WARN", label, detail: `add ${relativePath} only for photo-cover with you` };
 }
 
 async function isFile(filePath: string): Promise<boolean> {

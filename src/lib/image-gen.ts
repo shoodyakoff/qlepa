@@ -10,6 +10,7 @@ import {
   IMAGE_SIZE,
   type ImageCachePaths,
 } from "./image-cache.ts";
+import { normalizePromptPreset } from "./photo-cover.ts";
 
 export type PromptVariables = {
   scene: string;
@@ -32,6 +33,7 @@ export type BuildImageGenerationPlanOptions = {
 export type ImageGenerationPlan = {
   status: "hit" | "miss";
   cacheKey: string;
+  preset: string;
   finalPrompt: string;
   paths: ImageCachePaths;
   presetPath: string;
@@ -59,7 +61,8 @@ export function renderPromptTemplate(template: string, variables: PromptVariable
 export async function buildImageGenerationPlan(
   options: BuildImageGenerationPlanOptions,
 ): Promise<ImageGenerationPlan> {
-  const presetPath = path.join(options.projectRoot, "brand/prompts", `${options.preset}.md`);
+  const preset = normalizePromptPreset(options.preset);
+  const presetPath = path.join(options.projectRoot, "brand/prompts", `${preset}.md`);
   const template = await BunlessReadFile(presetPath);
   const references = await resolveReferenceFingerprints(options.projectRoot);
   const wardrobe = options.wardrobe ?? "casual editorial outfit";
@@ -87,6 +90,7 @@ export async function buildImageGenerationPlan(
   return {
     status: (await fileExists(paths.pngPath)) ? "hit" : "miss",
     cacheKey,
+    preset,
     finalPrompt,
     paths,
     presetPath,
