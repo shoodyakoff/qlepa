@@ -11,9 +11,12 @@ describe("onboard command", () => {
     expect(text).toContain("Онбординг Qlepa");
     expect(text).toContain("Пришлите в чат");
     expect(text).toContain("имя или название бренда");
+    expect(text).toContain("ссылка на ТГ-канал");
+    expect(text).toContain("тон и voice");
     expect(text).toContain("режим обложки");
     expect(text).toContain("фото лица");
     expect(text).toContain("фото в полный рост");
+    expect(text).toContain("или напишите: без моего фото");
     expect(text).toContain("Лицо и тело не нужны");
     expect(text).toContain("картинку-референс стиля");
     expect(text).toContain("Агент сохранит приватные файлы");
@@ -22,6 +25,7 @@ describe("onboard command", () => {
     expect(text).toContain("npm exec -- pnpm install");
     expect(text).toContain("/start, start, старт");
     expect(text).toContain("Сначала пришлите недостающие данные бренда и референсы");
+    expect(text).toContain("Техническая готовность — это только готовность репозитория");
     expect(text).toContain("Если хотите начать работу, напишите в чат: старт");
     expect(text).toContain("assets/face-refs/face.jpg");
     expect(text).toContain("npm run start");

@@ -15,7 +15,12 @@ describe("start command", () => {
     expect(text).toContain("Qlepa doctor");
     expect(text).toContain("WARN face reference");
     expect(text).toContain("READY TO RUN");
+    expect(text).toContain("READY TO RUN — это только техническая готовность");
+    expect(text).toContain("Это не значит, что Qlepa уже знает ваш бренд, tone of voice, ТГ-канал или фото");
     expect(text).toContain("Сначала пришлите недостающие данные бренда и референсы");
+    expect(text).toContain("фото лица");
+    expect(text).toContain("фото по пояс или в полный рост");
+    expect(text).toContain("или напишите: без моего фото");
     expect(text).toContain("Если хотите начать работу, напишите в чат: старт");
     expect(text).toContain("/start, start, старт");
     expect(text).not.toContain("Пришлите идею поста или черновик текста");

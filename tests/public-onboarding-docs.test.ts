@@ -13,6 +13,10 @@ describe("public onboarding docs", () => {
     expect(chatOnboarding).toContain("Отвечайте человеку по-русски");
     expect(chatOnboarding).toContain("Не показывайте пользователю служебные названия внутренних навыков");
     expect(chatOnboarding).toContain("Сначала соберите недостающие данные бренда");
+    expect(chatOnboarding).toContain("READY TO RUN — это только техническая готовность");
+    expect(chatOnboarding).toContain("не значит, что Qlepa знает бренд, tone of voice, ТГ-канал или фото");
+    expect(chatOnboarding).toContain("фото лица");
+    expect(chatOnboarding).toContain("фото по пояс или в полный рост");
     expect(chatOnboarding).not.toMatch(/superpowers/iu);
   });
 

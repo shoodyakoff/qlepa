@@ -39,7 +39,7 @@ After a successful install-only request, the final agent response should not sta
 Готово. Если хотите начать работу, напишите в чат: старт.
 ```
 
-For chat UX, `/start`, `start`, and `старт` are the same onboarding intent. The agent should answer in Russian, avoid exposing internal skill/workflow/tool names, and after `READY TO RUN` collect missing brand/reference data before asking for a post idea.
+For chat UX, `/start`, `start`, and `старт` are the same onboarding intent. The agent should answer in Russian, avoid exposing internal skill/workflow/tool names, and after `READY TO RUN` explain that this is only repository technical readiness. It must collect the brand name, public handle, Telegram/publication channel, audience, tone of voice, cover mode, face photo, waist/full-body photo or an explicit `без моего фото` answer before asking for a post idea.
 
 ## Private Inputs
 
