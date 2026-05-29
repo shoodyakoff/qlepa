@@ -50,6 +50,10 @@ The same route must also be written into each `slide-editorial` block as `visual
 
 These fields feed the quality gate before preview/build planning. They are not captions and are not rendered.
 
+Объекты в generated scene выбираются из смысла слайда, а не из случайного декоративного набора. Сначала зафиксируйте `reader-pain`, `mechanism`, `visual-route` и `visual-reason`; затем задайте `visual.template`, `visual.primary`, нужные `modules`/`metrics`/`outcomes` и только после этого формулируйте английский `scene` для `gen-photo`.
+
+Стиль выбирается через prompt preset в `brand/prompts/<preset>.md`, необязательный `assets/face-refs/style.jpg`, wardrobe/style directives и конкретные слова в scene. Персона, робот, оператор или критик появляются только когда это следует из route/brief/prompt. Qlepa не выбирает робота автоматически и не восстанавливает локальную сгенерированную картинку из одного `post.md`.
+
 ## 4. Scene Cadence
 
 Do not place generated scenes by a fixed every-N-slides rule. Choose them by semantic need and deck rhythm.

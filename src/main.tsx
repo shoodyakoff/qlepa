@@ -10,10 +10,10 @@ function App() {
     <main className="app-shell">
       <section className="intro">
         <p className="eyebrow">Qlepa</p>
-        <h1>Template workbench</h1>
+        <h1>Render workbench</h1>
         <p>
-          Stage 1 skeleton is ready for preview routes, slide templates, and
-          Playwright rendering.
+          Dev-only template routes for browser rendering. For a real carousel,
+          run {"carousel preview <post-path>"}.
         </p>
         <dl>
           <div>
@@ -23,11 +23,11 @@ function App() {
             </dd>
           </div>
           <div>
-            <dt>Output</dt>
-            <dd>PNG carousel assets</dd>
+            <dt>Use for</dt>
+            <dd>Template QA, not post planning</dd>
           </div>
         </dl>
-        <nav className="preview-nav" aria-label="Render previews">
+        <nav className="preview-nav" aria-label="Template render routes">
           {renderRoutes.map((route) => (
             <a href={route.path} key={route.path}>
               {route.name}

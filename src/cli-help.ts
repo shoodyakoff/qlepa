@@ -5,6 +5,7 @@ export function buildHelpText(): string {
     "Главное:",
     "  pnpm start",
     "  npm run start",
+    "  после установки напишите в чат: старт",
     "",
     "Команды pnpm:",
     "  pnpm carousel --help",

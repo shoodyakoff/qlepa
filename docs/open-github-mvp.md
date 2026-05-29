@@ -33,6 +33,12 @@ pnpm start
 
 `start` prints the onboarding flow, runs `doctor`, and ends with `READY TO RUN` when the core setup has no FAIL lines. The preferred onboarding path is chat-first: the person opens the repo in Codex or Claude, sends brand answers and image attachments in chat, and the agent saves files and updates config. See `docs/chat-onboarding.md`.
 
+After a successful install-only request, the final agent response should not start a dev server by default. It should hand control back to the person:
+
+```text
+Готово. Если хотите начать работу, напишите в чат: старт.
+```
+
 ## Private Inputs
 
 The person sends private references in chat. The agent saves them here:
@@ -89,6 +95,8 @@ Generate the image through Codex-owned image generation, save it to the printed 
 npm run carousel -- preview posts/starter-post
 npm run carousel -- build posts/starter-post
 ```
+
+`preview` starts a local Vite server because the carousel is rendered by React in a browser. `build` starts the same renderer temporarily so Playwright can capture `1080x1350` PNG screenshots. `npm run start` is only onboarding plus setup diagnostics and does not need a dev server.
 
 Outputs are written to:
 

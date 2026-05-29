@@ -16,6 +16,7 @@ describe("start command", () => {
     expect(text).toContain("WARN face reference");
     expect(text).toContain("READY TO RUN");
     expect(text).toContain("Пришлите идею поста или черновик текста");
+    expect(text).toContain("Если хотите начать работу, напишите в чат: старт");
     expect(text).not.toContain("NOT READY");
 
     await rm(dir, { recursive: true, force: true });
@@ -31,6 +32,7 @@ describe("start command", () => {
     expect(text).toContain("FAIL package.json");
     expect(text).toContain("NOT READY");
     expect(text).toContain("Исправьте строки с FAIL");
+    expect(text).toContain("После исправления снова запустите npm run start, затем напишите в чат: старт");
     expect(text).not.toContain("READY TO RUN");
 
     await rm(dir, { recursive: true, force: true });

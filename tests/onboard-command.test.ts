@@ -21,6 +21,7 @@ describe("onboard command", () => {
     expect(text).toContain("posts/starter-post/post.md");
     expect(text).toContain("npm exec -- pnpm install");
     expect(text).toContain("Можно делать карусель");
+    expect(text).toContain("Если хотите начать работу, напишите в чат: старт");
     expect(text).toContain("assets/face-refs/face.jpg");
     expect(text).toContain("npm run start");
   });
