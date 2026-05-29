@@ -15,7 +15,7 @@ If the task includes visual references, first use the reference-driven visual pi
 
 2. **human copy strategy**
    - Before writing slide copy, read `docs/skills/human-carousel-copy/SKILL.md`.
-   - Apply its required stack: product-marketing, Ogilvy, copywriting, copy-editing, and stop-slop.
+   - Apply its embedded stack: product-marketing, Ogilvy, copywriting, copy-editing, and stop-slop. Do not assume those skills exist outside this repository.
    - Treat the source draft as a human explanation first, not as raw material for slogans.
    - For reference-style educational slides, plan about 60% text and 40% visual unless the source demands another ratio.
    - Ban pseudo-wise sticker copy. The body must explain a process, decision, or consequence in normal sentences.

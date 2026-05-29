@@ -21,6 +21,69 @@ Apply these lenses in this order:
 4. **Copy-editing**: preserve the author's meaning and voice. Improve clarity without smoothing the text into corporate expert tone.
 5. **Stop-slop**: remove AI tells, slogan fragments, fake drama, and generic metaphors.
 
+This skill is self-contained. Do not assume external Codex skills are installed. Use the embedded passes below even when `product-marketing`, `copywriting`, `copy-editing`, `stop-slop`, or `ogilvy` are unavailable locally.
+
+## Embedded Passes
+
+### Embedded Product-Marketing Pass
+
+Before writing slide text, write a five-line strategy note:
+
+```text
+reader:
+pain:
+conflict:
+single promise:
+proof/details available:
+```
+
+- The reader is a real subscriber, not a demographic label.
+- The pain must be felt in the reader's work: delay, doubt, wasted money, messy process, weak output, or lost control.
+- The conflict names why the obvious solution fails.
+- The single promise says what the carousel helps the reader understand or do.
+- If there is no proof, example, tool, number, file, screen, decision, or personal detail, ask for source material before inventing.
+
+### Embedded Ogilvy Pass
+
+Make each slide earn attention with useful information:
+
+- The headline should carry a benefit, concrete tension, or newsworthy fact.
+- The body must add evidence: example, number, file, tool, sequence, mistake, decision, or consequence.
+- Prefer specific claims over broad advice.
+- One slide should make one promise and then pay it off.
+- Never use invented proof, fake metrics, fake testimonials, or authority claims the source did not provide.
+
+### Embedded Copywriting Pass
+
+Turn the post into a sequence, not a pile of good lines:
+
+- Pick one narrative path: problem -> failed shortcut -> mechanism -> proof -> takeaway.
+- Give every slide a role: hook, tension, turn, mechanism, proof, implication, or takeaway.
+- One slide advances one step. If two slides make the same point, merge or repurpose one.
+- Use body copy to explain causality: because X happened, Y changed, so the reader should notice Z.
+- End with a useful next action, not a motivational closer.
+
+### Embedded Copy-Editing Pass
+
+Edit in focused sweeps:
+
+- Clarity: remove sentences that hide the point, unclear pronouns, and abstract nouns without examples.
+- Voice: keep the author's normal words, roughness, jokes, and technical vocabulary when they carry meaning.
+- Density: cut filler, duplicated facts, and body text that only paraphrases the headline.
+- Flow: check that the last sentence of each slide leads naturally to the next slide.
+- Truth: preserve the source meaning. Do not upgrade a weak claim into a bigger promise.
+
+### Embedded Stop-Slop Pass
+
+Strip patterns that make the carousel sound generated:
+
+- Delete pseudo-wise fragments, generic drama, and "content about content".
+- Avoid formulaic pivots like "not X, but Y" unless the source depends on that contrast.
+- Avoid throat-clearing such as "here's the thing", "the real problem is", and "what matters is".
+- Avoid three-item lists made only for rhythm when two concrete items are enough.
+- Replace vague words like "system", "pipeline", "magic", "process", "quality", and "value" with the actual file, action, person, tool, or result.
+- Use active sentences with a human actor when possible.
+
 ## Writing Rules
 
 - Write like a person who actually did the work and explains it to a smart subscriber.

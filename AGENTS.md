@@ -16,7 +16,7 @@ Local checkout folder may remain `/Users/stanislav/Documents/Repos/images-codex`
 
 - Before writing or editing any slide copy, read `brand/voice.md` for the generic rules.
 - If `brand/voice.local.md` exists, read it second and treat it as the override for the author's tone, lexicon, marker phrases, and stop-list. The local profile beats the public guide.
-- Before drafting or rewriting carousel copy, read the project-local human copy skill in `docs/skills/human-carousel-copy/SKILL.md` and apply its product-marketing, Ogilvy, copywriting, copy-editing, and stop-slop passes.
+- Before drafting or rewriting carousel copy, read the project-local human copy skill in `docs/skills/human-carousel-copy/SKILL.md` and apply its embedded product-marketing, Ogilvy, copywriting, copy-editing, and stop-slop passes. Do not assume the user's Codex has those skills installed globally.
 - The "voice pass" phase in `docs/carousel-art-director.md` is mandatory before self-review: rewrite every headline and body in the author's voice, then verify no fact is repeated across headline / body / visual labels.
 
 ## Brand Chrome

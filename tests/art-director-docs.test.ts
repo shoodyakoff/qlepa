@@ -57,6 +57,21 @@ describe("carousel art director documentation", () => {
     expect(combined).toContain("quality rubric");
     expect(combined).toContain("revision loop");
   });
+
+  it("keeps the human carousel copy skill self-contained", async () => {
+    const skill = await readDocs(["docs/skills/human-carousel-copy/SKILL.md"]);
+
+    expect(skill).toContain("self-contained");
+    expect(skill).toContain("do not assume external codex skills are installed");
+    expect(skill).toContain("embedded product-marketing pass");
+    expect(skill).toContain("embedded ogilvy pass");
+    expect(skill).toContain("embedded copywriting pass");
+    expect(skill).toContain("embedded copy-editing pass");
+    expect(skill).toContain("embedded stop-slop pass");
+    expect(skill).toContain("single promise");
+    expect(skill).toContain("proof/details available");
+    expect(skill).toContain("problem -> failed shortcut -> mechanism -> proof -> takeaway");
+  });
 });
 
 async function readDocs(files: readonly string[]): Promise<string> {
