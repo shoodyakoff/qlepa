@@ -1,0 +1,4 @@
+interface:
+  display_name: "Human Carousel Copy"
+  short_description: "Write carousel slides as human explanations, not AI slogans"
+  default_prompt: "Rewrite this carousel copy with the human carousel copy workflow."

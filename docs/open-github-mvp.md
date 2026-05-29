@@ -1,0 +1,118 @@
+# Open GitHub MVP Guide
+
+Qlepa is meant to be shared as a local repo, not as a hosted app.
+
+The public repo contains:
+
+- the CLI and rendering pipeline;
+- React slide templates;
+- local fonts and prompt presets;
+- starter examples;
+- onboarding docs for Codex/Claude-assisted work.
+
+The public repo must not contain:
+
+- real face/body reference photos, when the user chooses a cover mode with their photo;
+- generated photo cache entries;
+- final carousel PNG outputs;
+- private draft posts unless the author chooses to publish them.
+
+## First Run
+
+```bash
+npm exec -- pnpm install
+npm run start
+```
+
+If `pnpm` is installed globally, these are equivalent:
+
+```bash
+pnpm install
+pnpm start
+```
+
+`start` prints the onboarding flow, runs `doctor`, and ends with `READY TO RUN` when the core setup has no FAIL lines. The preferred onboarding path is chat-first: the person opens the repo in Codex or Claude, sends brand answers and image attachments in chat, and the agent saves files and updates config. See `docs/chat-onboarding.md`.
+
+## Private Inputs
+
+The person sends private references in chat. The agent saves them here:
+
+```text
+assets/face-refs/face.jpg
+assets/face-refs/body.jpg
+assets/face-refs/style.jpg
+```
+
+`style.jpg` is optional. The folder is ignored by git except for its README.
+
+Brand data lives in:
+
+```text
+brand/tokens.ts
+brand/voice.md
+brand/fonts/
+brand/prompts/
+```
+
+Use local font files only. Do not add external CDN fonts for production rendering.
+For the first setup, keep the bundled default fonts unless the person explicitly asks for different typography.
+
+## Starter Post
+
+Start from:
+
+```text
+posts/starter-post/post.md
+```
+
+Copy it to a private `posts/<date-slug>/post.md` folder or edit the example directly while testing.
+
+## Mode A Image Flow
+
+Image preparation is semi-automatic. Generated files in `assets/generated/` are source images for a cover or slide, not the final rendered cover:
+
+```bash
+npm run carousel -- gen-photo editorial "creator at a clean desk reviewing carousel thumbnails" --no-wait
+```
+
+The command prints:
+
+- the final English prompt;
+- the cache key;
+- the exact `assets/generated/<hash>.png` save path.
+
+Generate the image through Codex-owned image generation, save it to the printed path, then run preview/build.
+
+## Preview And Build
+
+```bash
+npm run carousel -- preview posts/starter-post
+npm run carousel -- build posts/starter-post
+```
+
+Outputs are written to:
+
+```text
+posts/starter-post/out/
+```
+
+For real posts, use:
+
+```text
+posts/<date-slug>/out/
+```
+
+## Release Shape
+
+For early testers, publish the repo with:
+
+- clean docs;
+- no private photos;
+- no generated PNGs;
+- a passing `npm run build`;
+- a passing `npm run test`;
+- `npm run start` showing `READY TO RUN` in a fresh clone.
+
+Do not publish the existing local branch history if it contains private posts, `.codex/session` notes, generated outputs, or author-specific data from earlier commits. Publish a clean one-commit branch or a fresh repository state instead.
+
+Native app packaging is intentionally later. First prove the repo-based workflow with real users.
