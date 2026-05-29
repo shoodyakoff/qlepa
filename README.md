@@ -124,19 +124,21 @@ posts/<post-name>/out/
 
 ## Первый пост
 
-Пример лежит здесь:
+Публичный пример лежит здесь:
 
 ```text
 posts/starter-post/post.md
 ```
 
-Можно использовать его как подсказку по формату. Для нового поста лучше создать отдельную папку:
+Он должен показывать не только синтаксис, но и правильный уровень пайплайна: `slide-editorial`, `layout: "text-heavy"`, конкретные `reader-pain` / `mechanism` / `visual-route` / `visual-reason`, динамичные visual templates и длинную объясняющую копию там, где она нужна.
+
+Для нового поста лучше создать отдельную папку:
 
 ```text
 posts/my-first-post/post.md
 ```
 
-Если работаете через Codex или Claude, попросите агента создать папку и файл за вас.
+Если работаете через Codex или Claude, попросите агента создать папку и файл за вас. Для сложных постов агент должен читать `docs/carousel-art-director.md`, `docs/artifact-rich-carousel-pipeline.md`, `docs/reference-driven-visual-pipeline.md`, `docs/skills/human-carousel-copy/SKILL.md` и `docs/carousel-quality-rubric.md` перед написанием `post.md`.
 
 ## Почему появляется локальный сервер
 
@@ -177,6 +179,8 @@ npm run carousel -- gen-photo cover "low-angle outdoor poster, clean blue sky, p
 
 Для внутренних сцен можно использовать другие presets вроде `generated-scene`, `character-scene`, `studio` или `lifestyle`, если это следует из slide brief.
 
+Для artifact-rich каруселей агент обязан сделать image generation pass до финального render: выписать все `visual.image` и `visual.copyImage`, проверить cache, подготовить Mode A prompts через `gen-photo`, дождаться сохранённых PNG или честно сказать, что финальный build пока рано делать. Пустая зона под заголовком не должна оставаться пустой, если по смыслу там нужен сквозной оператор, персонаж или сцена.
+
 Команда покажет английский промпт и путь вида:
 
 ```text
@@ -205,6 +209,7 @@ assets/generated/<hash>.png
 - `brand/tokens.ts` — имя, ник, цвета, подписи;
 - `brand/voice.md` или приватный `brand/voice.local.md` — голос автора;
 - `assets/face-refs/` — ваши референсы, только если нужна фото-обложка с вами;
+- `assets/generated/` — source PNG для generated scenes и `visual.copyImage`;
 - `posts/<post-name>/post.md` — текст поста.
 
 ## Полезные команды
@@ -243,6 +248,7 @@ pnpm test
 
 - [Онбординг через чат](docs/chat-onboarding.md)
 - [Подсказки для Codex / Claude](docs/agent-dialogue.md)
+- [Artifact-rich carousel pipeline](docs/artifact-rich-carousel-pipeline.md)
 - [Carousel art director workflow](docs/carousel-art-director.md)
 - [Reference-driven visual pipeline](docs/reference-driven-visual-pipeline.md)
 - [Carousel quality rubric](docs/carousel-quality-rubric.md)

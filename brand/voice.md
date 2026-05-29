@@ -12,7 +12,9 @@ If `brand/voice.local.md` exists, treat it as the source of truth for the author
 one slide = one thought
 ```
 
-If a slide needs a long explanation, split it into two slides or simplify the claim.
+One thought can still need a real explanation. For process, educational, build-log, or artifact-rich slides, use `layout: "text-heavy"` and keep 3-6 natural sentences when that is what makes the mechanism understandable.
+
+Split the slide only when it contains two different thoughts. Do not split only because the body is longer than a caption.
 
 ## Three Layers, Not Three Restatements
 
@@ -21,10 +23,10 @@ Every editorial slide has three text layers: `headline`, `body`, and the labels 
 These are not three places to say the same thing. They are three different jobs:
 
 - `headline` — the hook. Works on its own.
-- `body` — a single concrete detail (number, name, moment) that `headline` does not already say. Often empty.
+- `body` — the explanation: one concrete detail on compact slides, or a short human paragraph on text-heavy slides.
 - visual labels — concrete artifacts (file name, status, step, count). Not a paraphrase of `body`.
 
-If a reader can predict the body after reading the headline, the body is dead weight. If the visual labels could be deleted and the slide still says the same thing, the labels are noise.
+If a reader can predict the body after reading the headline, the body is dead weight. If the body explains a mechanism the artifact cannot show alone, keep it. If the visual labels could be deleted and the slide still says the same thing, the labels are noise.
 
 ## Carousel Art Director
 
@@ -99,7 +101,8 @@ A local profile may extend this list with phrases specific to the author's anti-
    - Do not add generated method numbers by default. Use `headline-numbering: true` only when the post promise is explicitly numbered.
 
 3. `body` adds concrete detail or stays empty.
-   - Maximum one sentence.
+   - Compact slides: one sentence.
+   - Text-heavy explanatory slides: 3-6 natural sentences or 2-3 short paragraphs.
    - Prefer a number, a name, a moment, an honest limitation.
    - Avoid meta-text about the slide or visual.
 

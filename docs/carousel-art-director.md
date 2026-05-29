@@ -6,6 +6,8 @@ The carousel art director must produce working notes before writing `post.md`.
 
 If the task includes visual references, first use the reference-driven visual pipeline in `docs/reference-driven-visual-pipeline.md`. Extract transferable visual grammar before choosing templates.
 
+For process, educational, build-log, or artifact-heavy carousels, also use `docs/artifact-rich-carousel-pipeline.md`. The default is not short sticker copy; the default is text-heavy explanatory slides with proof objects.
+
 ## Required Phases
 
 1. **reference pattern extraction** when references exist
@@ -18,6 +20,7 @@ If the task includes visual references, first use the reference-driven visual pi
    - Apply its embedded stack: product-marketing, Ogilvy, copywriting, copy-editing, and stop-slop. Do not assume those skills exist outside this repository.
    - Treat the source draft as a human explanation first, not as raw material for slogans.
    - For reference-style educational slides, plan about 60% text and 40% visual unless the source demands another ratio.
+   - For process/build-log carousels, default editorial slides to `layout: "text-heavy"` and write 3-6 natural sentences when the mechanism needs it.
    - Ban pseudo-wise sticker copy. The body must explain a process, decision, or consequence in normal sentences.
 
 3. **source analysis**
@@ -34,6 +37,7 @@ If the task includes visual references, first use the reference-driven visual pi
    - List forbidden reuse from prior work.
    - For the first slide with the author's photo, do not choose a mood or custom cover direction. Use only the `outdoor-editorial-arrow` photo-cover pattern.
    - Decide when a slide needs a real/generated image, a generated scene, a diagram, a product-like screen, an artifact, a field note, an assembly rig, a semantic selector, or a command surface.
+   - If the slide layout leaves a repeated empty area under the headline, choose a meaningful recurring actor/scene and wire it through `visual.copyImage`; do not leave the zone blank by default.
    - Set scene cadence by semantic need and deck rhythm, not by a fixed every-N-slides rule.
    - If the source or user gives a user-specified visual rhythm, such as infographic / generated image alternation, record it in the post frontmatter and honor it unless it makes a slide less clear.
    - Check adjacent slides for repeated visual routes before rendering.
@@ -52,40 +56,47 @@ If the task includes visual references, first use the reference-driven visual pi
    - Use `visual-repeat-ok` only when two adjacent editorial slides intentionally use the same route and the second slide changes the role, state, or evidence.
    - The quality gate also requires `visual.template` and `visual.primary`; do not rely on renderer defaults to fill a slide.
    - `generated-scene`, `character-scene`, and `photo-scene` routes require `visual.image` before final render planning.
+   - When using `visual.copyImage`, it must point to a generated source image in `assets/generated/` and add meaning to the slide, not decorate it.
    - If build or preview planning reports `Carousel quality gate failed`, revise the slide brief/source first. Do not bypass the error by swapping templates.
 
-8. **draft render**
+8. **image generation pass**
+   - Before draft render, list every slide that needs `visual.image` or `visual.copyImage`.
+   - Check `assets/generated/` cache first. Reuse a suitable cached image only when its prompt/reference fit the slide.
+   - If an image is missing, run the appropriate Mode A command, such as `npm run carousel -- gen-photo generated-scene "<scene>" --no-wait` or `npm run carousel -- gen-photo character-scene "<scene>" --no-wait`, then tell the user where to save the generated PNG.
+   - Do not silently downgrade an intended scene into a blank CSS artifact because the image is missing.
+
+9. **draft render**
    - Create the post source and render PNGs.
    - Build a contact sheet or inspect the slides in a browser.
 
-9. **voice pass** *(mandatory)*
+10. **voice pass** *(mandatory)*
    - Read `brand/voice.md` and `brand/voice.local.md` (if present) before opening any slide.
    - For every slide, rewrite the headline and body in the author's voice. Strip stop-list phrases, SaaS clichés, agency smoothing, and "objective explainer" tone.
    - For every slide, check the three text layers (`headline`, `body`, visual labels: `primary`, `secondary`, `badge`, `note`, `modules`, `metrics`, `outcomes`). Each fact lives in exactly one layer. If two layers carry the same fact, delete it from the weaker layer.
-   - Cut `body` to one sentence with a concrete detail (number, name, moment, honest limitation) — or remove it.
+   - Compact slides may have a one-sentence `body`. Text-heavy explanatory slides should keep the human explanation if it carries the mechanism; cut only filler and duplicated facts.
    - Cut `modules`, `metrics`, `outcomes` to at most two items each, only items that add a fact not in the headline or body.
    - If a slide reads like it could belong to any AI-workflow post on the internet, rewrite it or delete it.
    - Re-render after the voice pass, before scoring.
 
-10. **self-review**
+11. **self-review**
    - Score each slide with `docs/carousel-quality-rubric.md`, including the brand fit and text non-redundancy criteria.
    - For every `2` in brand fit or text non-redundancy, write a one-line justification pointing to a specific marker phrase or to the specific fact split across layers. Unjustified `2`s collapse to `1`.
    - Name the weakest slide and the weakest visual.
    - Do not present a final carousel while any slide is below threshold.
 
-11. **revision loop**
+12. **revision loop**
    - Revise the source or visual plan.
    - Render again.
    - Repeat until the score and visual inspection pass.
 
-12. **final legibility check**
+13. **final legibility check**
    - Inspect every rendered slide, not only the edited ones.
    - Add a `semi-transparent text surface` when cover or photo text depends on a busy background for contrast.
    - Flag footer/copy collisions, headline/body collisions, clipped text, and unreadable brand chrome.
    - Flag generated-image text artifacts when a generated bitmap contains fake UI text, labels, handwriting, or other text-like marks that look accidental.
    - Do not finish while any slide needs a readability surface, spacing revision, crop, blur, or regenerated image.
 
-13. **intent verification**
+14. **intent verification**
    - Verify the final result against the original user pain, not only against the slide list.
    - Record what was compressed or deliberately omitted.
 

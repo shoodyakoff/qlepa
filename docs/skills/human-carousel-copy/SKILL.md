@@ -88,7 +88,8 @@ Strip patterns that make the carousel sound generated:
 
 - Write like a person who actually did the work and explains it to a smart subscriber.
 - Use normal sentences and paragraphs. Do not force every line to become a quotable.
-- A text-heavy carousel slide may contain 3-6 natural sentences if they read cleanly.
+- For process, educational, build-log, or artifact-rich carousels, default to `layout: "text-heavy"` and use 3-6 natural sentences when the mechanism needs explanation.
+- A text-heavy carousel slide may contain 2-3 short paragraphs if they read cleanly.
 - Prefer concrete details: tools, files, folders, cards, states, counts, actions, decisions.
 - Keep technical words when the author uses them naturally: `hook`, `CTA`, `b-roll`, `prompt`, `Codex`, API, timings.
 - Keep roughness when it is honest. Do not replace direct language with polite marketing prose.
@@ -119,9 +120,17 @@ mechanism:
 headline:
 body:
 visual job:
+proof object:
+image need:
 ```
 
 Body copy should usually be one compact paragraph or several short paragraphs separated by blank lines. If a sentence exists only to sound sharp, cut it.
+
+For `image need`, name one of:
+
+- `none` when the artifact itself carries the point;
+- `visual.image` when the slide needs a generated scene as the main artifact;
+- `visual.copyImage` when a recurring actor/scene should fill the copy zone and clarify the deck's process.
 
 ## Final Check
 

@@ -2,6 +2,8 @@
 
 Use this layer when a carousel must learn from reference decks without copying them. The goal is to extract visual grammar: rhythm, hierarchy, composition roles, and artifact types.
 
+For artifact-rich references, pair this with `docs/artifact-rich-carousel-pipeline.md` so the extraction turns into long human copy, proof objects, and image-generation planning rather than a short template fill.
+
 ## 1. Reference Intake
 
 Save references in an ignored local folder such as:
@@ -71,6 +73,8 @@ Use a generated scene when at least one is true:
 - a real/generated scene would make the idea less generic than another board or dashboard.
 
 Default rhythm for a 7-10 slide deck: one cover image plus one to three internal generated scenes. Avoid adjacent generated scenes unless the story intentionally becomes cinematic. Always write what the scene should show in the private slide brief before generating.
+
+When a recurring actor or operator should appear in the empty copy zone rather than as the main artifact, use `visual.copyImage` and plan that generated image in the same Mode A pass.
 
 Possible generated-scene routes:
 

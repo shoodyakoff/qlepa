@@ -19,6 +19,25 @@ Then choose a visual form.
 
 ## Pattern Types
 
+### Text-Heavy Proof Object
+
+Use when the slide needs a real explanation plus a strong artifact, as in process, educational, build-log, or workflow posts.
+
+Good for:
+
+- explaining how a system actually works;
+- showing files, rules, folders, timings, statuses, or generated scenes;
+- keeping the author's human explanation instead of compressing it into a slogan.
+
+Requires:
+
+- `layout: "text-heavy"`;
+- 3-6 natural sentences when the mechanism needs it;
+- one proof object that would become weaker if moved to another slide;
+- different facts in headline, body, and visual labels.
+
+See `docs/artifact-rich-carousel-pipeline.md`.
+
 ### Cinematic Moment
 
 Use when the slide needs emotion, stakes, or a human scene.
@@ -81,6 +100,56 @@ Avoid:
 - using a character scene just because the slide needs decoration;
 - repeating the same robot/persona across many slides;
 - embedding important copy inside the generated bitmap.
+
+### Copy Image
+
+Use `visual.copyImage` when a text-heavy editorial slide needs a recurring actor, operator, or scene near the copy area. This fixes the common empty-zone problem under the headline without turning the lower artifact into a decorative image.
+
+Good for:
+
+- a recurring operator/persona across a process deck;
+- a small generated image that clarifies who or what is acting;
+- balancing dense text-heavy layouts.
+
+Requires:
+
+- a generated source PNG in `assets/generated/`;
+- a role in the slide brief;
+- no readable text inside the bitmap.
+
+Avoid:
+
+- using the same image when it has no relationship to the slide;
+- treating `copyImage` as a replacement for `visual.image` on `generated-scene` slides.
+
+### Prompt Loop
+
+Use `prompt-loop` when the slide contrasts a vague one-prompt loop with a prepared process.
+
+Good for:
+
+- "AI guesses / I explain again / every run starts over";
+- showing why a pipeline is more predictable than a chat prompt.
+
+### Script Rules File
+
+Use `script-rules-file` when the slide explains rules before production: hooks, CTA, stop words, accents, or author constraints.
+
+Good for:
+
+- real-looking `.md` rules;
+- line rows, statuses, and concrete constraints;
+- showing how author taste becomes an input.
+
+### Voice Caption Pipeline
+
+Use `voice-caption-pipeline` when the slide explains audio becoming timed words and subtitle groups.
+
+Good for:
+
+- waveform -> timestamps -> captions;
+- pronunciation rules;
+- showing that "audio is ready" is not the same as "video is ready".
 
 ### Artifact Table
 

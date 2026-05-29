@@ -17,6 +17,7 @@ Local checkout folder may remain `/Users/stanislav/Documents/Repos/images-codex`
 - Before writing or editing any slide copy, read `brand/voice.md` for the generic rules.
 - If `brand/voice.local.md` exists, read it second and treat it as the override for the author's tone, lexicon, marker phrases, and stop-list. The local profile beats the public guide.
 - Before drafting or rewriting carousel copy, read the project-local human copy skill in `docs/skills/human-carousel-copy/SKILL.md` and apply its embedded product-marketing, Ogilvy, copywriting, copy-editing, and stop-slop passes. Do not assume the user's Codex has those skills installed globally.
+- For process, educational, build-log, or artifact-rich posts, read `docs/artifact-rich-carousel-pipeline.md` before writing `post.md`. Use `layout: "text-heavy"` and 3-6 natural body sentences when the slide needs explanation.
 - The "voice pass" phase in `docs/carousel-art-director.md` is mandatory before self-review: rewrite every headline and body in the author's voice, then verify no fact is repeated across headline / body / visual labels.
 
 ## Brand Chrome
@@ -32,6 +33,7 @@ Local checkout folder may remain `/Users/stanislav/Documents/Repos/images-codex`
 - Generated method numbers in editorial headlines are opt-in only. Use `headline-numbering: true` only when the source promise is explicitly numbered, such as "4 способа"; narrative/process carousels do not get automatic `01/02/...` in headlines.
 - Before writing slide copy, identify the reader pain and the mechanism that resolves it. Do not ship a slide that is only a collection of plausible phrases, labels, or modules.
 - A slide visual must make the mechanism clearer; if it could be replaced by a generic dashboard or mood image without losing meaning, revise the slide brief.
+- For artifact-rich slides, choose a proof object before choosing a template. Prefer dynamic templates such as `prompt-loop`, `script-rules-file`, `voice-caption-pipeline`, `system-map`, `asset-grid`, `command-board`, `generated-scene`, and `character-scene` when they match the mechanism.
 
 ## Commands
 
@@ -53,6 +55,7 @@ These are target commands for the first MVP. Do not claim they work until implem
 - Before any live generation, check the cache by prompt/reference hash.
 - All image prompts are in English. Slide text can be Russian.
 - Do not hardcode model or billing assumptions into code until the local Codex image path is verified for this project.
+- For artifact-rich decks, run an image generation pass before final render planning: check `assets/generated/`, prepare Mode A prompts for missing `visual.image` / `visual.copyImage`, and do not leave meaningful image slots blank.
 
 ## Code Style
 

@@ -140,3 +140,5 @@ posts/<post-name>/out/
 ```
 
 Финальная обложка — это первый PNG поста, обычно `posts/<post-name>/out/01-cover.png`. `assets/generated/` хранит только исходные generated-картинки, если они нужны для обложки или слайда.
+
+Для сложного поста агент должен читать `docs/artifact-rich-carousel-pipeline.md` вместе с `docs/carousel-art-director.md`. Не превращайте идею в короткие карточки, если источник требует объяснения: используйте `layout: "text-heavy"`, human-copy skill, доказательные visual templates и image generation pass для `visual.image` / `visual.copyImage`.

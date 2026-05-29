@@ -58,11 +58,13 @@
 
 ```text
 Создай новую карусель из моей идеи.
-Сначала прочитай docs/carousel-art-director.md, docs/reference-driven-visual-pipeline.md, docs/carousel-quality-rubric.md и docs/visual-pattern-library.md.
-Используй posts/starter-post/post.md только как пример формата.
+Сначала прочитай docs/carousel-art-director.md, docs/artifact-rich-carousel-pipeline.md, docs/reference-driven-visual-pipeline.md, docs/skills/human-carousel-copy/SKILL.md, docs/carousel-quality-rubric.md и docs/visual-pattern-library.md.
+Используй posts/starter-post/post.md как пример text-heavy artifact-rich формата, а не как короткий шаблон.
 Спроси только то, без чего нельзя написать слайды.
 Сохраняй рабочие заметки и референсы в private/, если они приватные.
-Перед post.md сделай анализ источника, стратегию истории, визуальное направление и брифы слайдов.
+Перед post.md сделай анализ источника, стратегию истории, визуальное направление, human-copy pass и брифы слайдов.
+Для process / educational / build-log постов используй layout: "text-heavy", длинные body там, где нужен смысл, и visual templates вроде prompt-loop, script-rules-file, voice-caption-pipeline, generated-scene, character-scene, system-map, asset-grid, command-board.
+До финального render сделай image generation pass: проверь assets/generated/, подготовь gen-photo prompts для visual.image / visual.copyImage и не оставляй пустую зону под заголовком, если там нужен персонаж или сцена.
 После первого рендера проведи самопроверку, исправь слабые слайды и только потом собери финальные PNG.
 ```
 
