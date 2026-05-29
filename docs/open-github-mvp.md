@@ -39,6 +39,8 @@ After a successful install-only request, the final agent response should not sta
 Готово. Если хотите начать работу, напишите в чат: старт.
 ```
 
+For chat UX, `/start`, `start`, and `старт` are the same onboarding intent. The agent should answer in Russian, avoid exposing internal skill/workflow/tool names, and after `READY TO RUN` collect missing brand/reference data before asking for a post idea.
+
 ## Private Inputs
 
 The person sends private references in chat. The agent saves them here:

@@ -15,8 +15,10 @@ describe("start command", () => {
     expect(text).toContain("Qlepa doctor");
     expect(text).toContain("WARN face reference");
     expect(text).toContain("READY TO RUN");
-    expect(text).toContain("Пришлите идею поста или черновик текста");
+    expect(text).toContain("Сначала пришлите недостающие данные бренда и референсы");
     expect(text).toContain("Если хотите начать работу, напишите в чат: старт");
+    expect(text).toContain("/start, start, старт");
+    expect(text).not.toContain("Пришлите идею поста или черновик текста");
     expect(text).not.toContain("NOT READY");
 
     await rm(dir, { recursive: true, force: true });

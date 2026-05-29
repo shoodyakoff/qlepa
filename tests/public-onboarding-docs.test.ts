@@ -7,7 +7,13 @@ describe("public onboarding docs", () => {
     const chatOnboarding = await readFile("docs/chat-onboarding.md", "utf8");
 
     expect(readme).toContain("напишите в чат: `старт`");
+    expect(readme).toContain("`/start`, `start`, `старт`");
     expect(chatOnboarding).toContain("Если человек пишет `старт`");
+    expect(chatOnboarding).toContain("`/start`, `start`, `старт`");
+    expect(chatOnboarding).toContain("Отвечайте человеку по-русски");
+    expect(chatOnboarding).toContain("Не показывайте пользователю служебные названия внутренних навыков");
+    expect(chatOnboarding).toContain("Сначала соберите недостающие данные бренда");
+    expect(chatOnboarding).not.toMatch(/superpowers/iu);
   });
 
   it("explains why preview/build use a local server", async () => {

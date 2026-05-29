@@ -25,6 +25,8 @@ export function formatStartText(onboardingText: string, checks: readonly DoctorC
         "",
         "Следующий шаг",
         "Если хотите начать работу, напишите в чат: старт",
+        "/start, start, старт — один и тот же сценарий Qlepa onboarding.",
+        "Сначала пришлите недостающие данные бренда и референсы. Если бренд уже настроен, пришлите идею поста или черновик текста.",
       ];
 
   return [
