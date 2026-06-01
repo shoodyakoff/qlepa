@@ -39,7 +39,7 @@ After a successful install-only request, the final agent response should not sta
 Готово. Если хотите начать работу, напишите в чат: старт.
 ```
 
-For chat UX, `/start`, `start`, and `старт` are the same onboarding intent. The agent should answer in Russian, avoid exposing internal skill/workflow/tool names, and after `READY TO RUN` explain that this is only repository technical readiness. It must collect the brand name, public handle, Telegram/publication channel, audience, tone of voice, face photo, waist/full-body photo for the single `outdoor-editorial-arrow` photo-cover pattern or an explicit `без моего фото` answer before asking for a post idea.
+For chat UX, `/start`, `start`, and `старт` are the same onboarding intent. The agent should answer in Russian, avoid exposing internal skill/workflow/tool names, and after `READY TO RUN` explain that this is only repository technical readiness. It must collect the brand name, public handle, Telegram/publication channel, audience, tone of voice, face photo, waist/full-body photo for the single `outdoor-editorial-arrow` photo-cover pattern or an explicit `без моего фото` answer before asking for a post idea. When the person is ready for the first post, the agent should ask which pipeline to use: Editorial / Artifact-Rich or Series Digest.
 
 ## Private Inputs
 
@@ -55,24 +55,25 @@ assets/face-refs/style.jpg
 
 If the person sends DNG, HEIC, or another raw format, the agent should export working JPG copies into the paths above. Do not commit the raw originals or the JPG copies.
 
-Brand data lives in:
+Private local brand data lives in:
 
 ```text
-brand/tokens.ts
-brand/voice.md
-brand/fonts/
-brand/prompts/
+private/brand.json
+brand/voice.local.md
 ```
+
+`private/brand.json` stores the user's local handle, visible signature, and chrome labels. `brand/voice.local.md` stores the private voice profile. Both are ignored by git. Public starter values in `brand/tokens.ts` should remain generic unless the maintainer intentionally changes the public theme.
 
 Use local font files only. Do not add external CDN fonts for production rendering.
 For the first setup, keep the bundled default fonts unless the person explicitly asks for different typography.
 
-## Starter Post
+## Starter Posts
 
-Start from:
+Choose the starter by pipeline:
 
 ```text
-posts/starter-post/post.md
+posts/starter-post/post.md       # Editorial / Artifact-Rich
+posts/starter-digest/post.md     # Series Digest
 ```
 
 Copy it to a private `posts/<date-slug>/post.md` folder or edit the example directly while testing.
@@ -100,6 +101,8 @@ Generate the image through Codex-owned image generation, save it to the printed 
 ```bash
 npm run carousel -- preview posts/starter-post
 npm run carousel -- build posts/starter-post
+npm run carousel -- preview posts/starter-digest
+npm run carousel -- build posts/starter-digest
 ```
 
 `preview` starts a local Vite server because the carousel is rendered by React in a browser. `build` starts the same renderer temporarily so Playwright can capture `1080x1350` PNG screenshots. `npm run start` is only onboarding plus setup diagnostics and does not need a dev server.

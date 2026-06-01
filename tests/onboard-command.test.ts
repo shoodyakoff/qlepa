@@ -21,8 +21,14 @@ describe("onboard command", () => {
     expect(text).toContain("Лицо и тело не нужны");
     expect(text).toContain("картинку-референс композиции");
     expect(text).toContain("Агент сохранит приватные файлы");
+    expect(text).toContain("private/brand.json");
+    expect(text).toContain("brand/voice.local.md");
     expect(text).toContain("Локальные шрифты лучше не менять");
+    expect(text).toContain("Выберите режим первого поста");
+    expect(text).toContain("Editorial / Artifact-Rich");
+    expect(text).toContain("Series Digest");
     expect(text).toContain("posts/starter-post/post.md");
+    expect(text).toContain("posts/starter-digest/post.md");
     expect(text).toContain("npm exec -- pnpm install");
     expect(text).toContain("/start, start, старт");
     expect(text).toContain("Сначала пришлите недостающие данные бренда и референсы");
@@ -30,6 +36,8 @@ describe("onboard command", () => {
     expect(text).toContain("Если хотите начать работу, напишите в чат: старт");
     expect(text).toContain("assets/face-refs/face.jpg");
     expect(text).toContain("npm run start");
+    expect(text).toContain("npm run carousel -- build posts/starter-digest");
+    expect(text).not.toContain("Он также обновит brand/tokens.ts");
     expect(text).not.toContain("Пришлите идею поста или черновик текста");
     expect(text).not.toContain("Выберите настроение обложки");
   });

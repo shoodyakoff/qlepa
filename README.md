@@ -20,6 +20,7 @@ Qlepa помогает собрать карусель для Instagram или T
 - для фото-обложки: фото в полный рост или по пояс;
 - если не хотите обложку с собой: напишите `без моего фото`;
 - опционально: картинку-референс композиции в том же outdoor-arrow стиле;
+- какой режим первого поста нужен: **Editorial / Artifact-Rich** или **Series Digest**;
 - идею первого поста или черновик текста.
 
 Фото-обложка Qlepa не выбирается по настроению. В MVP есть один паттерн для обложки с человеком: `outdoor-editorial-arrow` — низкая камера, чистое синее небо, человек справа сверху, оранжевая стрелка/геометрия, крупный текст поверх. Цвета из других референсов можно использовать дальше в бренде, но не как альтернативные cover-настроения.
@@ -67,6 +68,7 @@ pnpm start
 Спроси только то, чего не хватает для моего бренда и референсов.
 Оставь стандартные локальные шрифты, если я сам не попрошу поменять типографику.
 Когда npm run start покажет READY TO RUN, объясни, что это только техническая готовность репозитория. Спроси недостающие данные бренда, ТГ-канал, tone of voice и фото для единственной photo-cover схемы outdoor-editorial-arrow или явный ответ "без моего фото". Если бренд уже настроен, попроси идею поста или черновик.
+Если я хочу первый пост, помоги выбрать режим: Editorial / Artifact-Rich или Series Digest.
 ```
 
 Дальше отправьте ответы и изображения в чат. Агент:
@@ -76,7 +78,8 @@ pnpm start
 3. обновит брендовые настройки;
 4. проверит проект;
 5. попросит идею первого поста только после настройки бренда;
-6. поможет собрать превью и финальные PNG.
+6. поможет выбрать режим первого поста: Editorial / Artifact-Rich или Series Digest;
+7. поможет собрать превью и финальные PNG.
 
 Если вы просите агента только установить Qlepa, финальное сообщение после успешной установки должно быть простым: `Готово. Если хотите начать работу, напишите в чат: старт`.
 
@@ -124,13 +127,16 @@ posts/<post-name>/out/
 
 ## Первый пост
 
-Публичный пример лежит здесь:
+Публичных примера два:
 
 ```text
-posts/starter-post/post.md
+posts/starter-post/post.md       # Editorial / Artifact-Rich
+posts/starter-digest/post.md     # Series Digest
 ```
 
-Он должен показывать не только синтаксис, но и правильный уровень пайплайна: `slide-editorial`, `layout: "text-heavy"`, конкретные `reader-pain` / `mechanism` / `visual-route` / `visual-reason`, динамичные visual templates и длинную объясняющую копию там, где она нужна.
+`posts/starter-post/post.md` показывает старый/default пайплайн: `slide-editorial`, `layout: "text-heavy"`, конкретные `reader-pain` / `mechanism` / `visual-route` / `visual-reason`, динамичные visual templates и длинную объясняющую копию там, где она нужна.
+
+`posts/starter-digest/post.md` показывает новый Series Digest: `digest-cover`, `digest-update`, `digest-cta`, повторяемый визуальный ритм, фичи, flow, compare и CTA.
 
 Для нового поста лучше создать отдельную папку:
 
@@ -206,11 +212,13 @@ assets/generated/<hash>.png
 
 Обычно достаточно настроить:
 
-- `brand/tokens.ts` — имя, ник, цвета, подписи;
-- `brand/voice.md` или приватный `brand/voice.local.md` — голос автора;
+- `private/brand.json` — локальный ник, подписи и author-specific chrome;
+- `brand/voice.local.md` — приватный голос автора;
 - `assets/face-refs/` — ваши референсы, только если нужна фото-обложка с вами;
 - `assets/generated/` — source PNG для generated scenes и `visual.copyImage`;
 - `posts/<post-name>/post.md` — текст поста.
+
+`brand/tokens.ts` оставляйте generic, если вы просто настраиваете локальный профиль автора. Меняйте его только если сознательно меняете публичную тему проекта.
 
 ## Полезные команды
 
@@ -218,6 +226,8 @@ assets/generated/<hash>.png
 npm run start
 npm run carousel -- preview posts/starter-post
 npm run carousel -- build posts/starter-post
+npm run carousel -- preview posts/starter-digest
+npm run carousel -- build posts/starter-digest
 npm run carousel -- gen-photo cover "low-angle blue sky with orange arrow structure" --no-wait
 npm run test
 ```
@@ -228,12 +238,14 @@ npm run test
 pnpm start
 pnpm carousel preview posts/starter-post
 pnpm carousel build posts/starter-post
+pnpm carousel preview posts/starter-digest
+pnpm carousel build posts/starter-digest
 pnpm test
 ```
 
 ## Что безопасно отправлять другому человеку
 
-В репозитории можно хранить код, шаблоны, шрифты, промпты и пример `posts/starter-post/post.md`.
+В репозитории можно хранить код, шаблоны, шрифты, промпты и публичные примеры `posts/starter-post/post.md` / `posts/starter-digest/post.md`.
 
 Не коммитьте:
 

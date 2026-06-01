@@ -15,6 +15,7 @@ describe("doctor command", () => {
     expect(report).toContain("Qlepa doctor");
     expect(report).toContain("PASS Node");
     expect(report).toContain("PASS brand prompts");
+    expect(report).toContain("PASS starter digest");
     expect(report).toContain("WARN face reference");
     expect(report).toContain("WARN body reference");
     expect(checks.some((check) => check.status === "FAIL")).toBe(false);
@@ -30,9 +31,11 @@ async function makeTempProject(): Promise<string> {
   await mkdir(path.join(dir, "assets/face-refs"), { recursive: true });
   await mkdir(path.join(dir, "assets/generated"), { recursive: true });
   await mkdir(path.join(dir, "posts/starter-post"), { recursive: true });
+  await mkdir(path.join(dir, "posts/starter-digest"), { recursive: true });
   await writeFile(path.join(dir, "brand/prompts/editorial.md"), "Generate {scene}");
   await writeFile(path.join(dir, "brand/fonts/tektur-900.ttf"), "font");
   await writeFile(path.join(dir, "posts/starter-post/post.md"), "---\nslug: starter\n---\n");
+  await writeFile(path.join(dir, "posts/starter-digest/post.md"), "---\nslug: starter-digest\n---\n");
   await writeFile(path.join(dir, "package.json"), "{}");
   return dir;
 }

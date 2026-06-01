@@ -28,6 +28,7 @@ export async function collectDoctorChecks(
   checks.push(await checkAnyFile(projectRoot, "brand/prompts", ".md", "brand prompts"));
   checks.push(await checkAnyFile(projectRoot, "brand/fonts", ".ttf", "local fonts"));
   checks.push(await checkFile(projectRoot, "posts/starter-post/post.md", "starter post"));
+  checks.push(await checkFile(projectRoot, "posts/starter-digest/post.md", "starter digest"));
   checks.push(await checkOptionalFile(projectRoot, "assets/face-refs/face.jpg", "face reference"));
   checks.push(await checkOptionalFile(projectRoot, "assets/face-refs/body.jpg", "body reference"));
   checks.push(await checkOptionalFile(projectRoot, "assets/face-refs/style.jpg", "style reference"));

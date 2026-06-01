@@ -49,8 +49,9 @@
 
 Не выбирай настроение обложки и не предлагай custom cover варианты. Фото-обложка Qlepa сейчас только outdoor-editorial-arrow: низкая камера, синее небо, человек справа сверху, оранжевая стрелка, крупный текст поверх.
 Сохрани мои фото в assets/face-refs/ только если я не написал "без моего фото". Если я дал DNG/HEIC/raw, сделай JPG-копии face.jpg и body.jpg.
-Обнови brand/tokens.ts и brand/voice.md.
+Сохрани мой локальный бренд-хром в private/brand.json.
 Если профиль голоса приватный, создай brand/voice.local.md.
+Не записывай author-specific данные в публичные starter-значения brand/tokens.ts.
 Не коммить приватные фото, generated-картинки и готовые PNG.
 ```
 
@@ -66,6 +67,18 @@
 Для process / educational / build-log постов используй layout: "text-heavy", длинные body там, где нужен смысл, и visual templates вроде prompt-loop, script-rules-file, voice-caption-pipeline, generated-scene, character-scene, system-map, asset-grid, command-board.
 До финального render сделай image generation pass: проверь assets/generated/, подготовь gen-photo prompts для visual.image / visual.copyImage и не оставляй пустую зону под заголовком, если там нужен персонаж или сцена.
 После первого рендера проведи самопроверку, исправь слабые слайды и только потом собери финальные PNG.
+```
+
+## Создать Series Digest
+
+```text
+Создай новую карусель в режиме Series Digest.
+Сначала прочитай docs/pipelines.md и docs/series-digest-pipeline.md.
+Используй posts/starter-digest/post.md как публичный пример структуры.
+Не смешивай digest-cover / digest-update / digest-cta со slide-editorial.
+Спроси только тему дайджеста, список апдейтов, нужный CTA и нужен ли сквозной маскот.
+Если нужен маскот, подготовь Mode A prompts через npm run carousel -- gen-photo series-mascot "<scene>" --no-wait и объясни, куда сохранить PNG в assets/generated/.
+После сохранения картинок собери npm run carousel -- build posts/<post-name>.
 ```
 
 ## Подготовить промпт для картинки

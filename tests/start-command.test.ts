@@ -18,6 +18,10 @@ describe("start command", () => {
     expect(text).toContain("READY TO RUN — это только техническая готовность");
     expect(text).toContain("Это не значит, что Qlepa уже знает ваш бренд, tone of voice, ТГ-канал или фото");
     expect(text).toContain("Сначала пришлите недостающие данные бренда и референсы");
+    expect(text).toContain("private/brand.json");
+    expect(text).toContain("Выберите режим первого поста");
+    expect(text).toContain("Series Digest");
+    expect(text).toContain("posts/starter-digest/post.md");
     expect(text).toContain("фото лица");
     expect(text).toContain("фото по пояс или в полный рост");
     expect(text).toContain("или напишите: без моего фото");
@@ -63,9 +67,11 @@ async function makeTempProject(): Promise<string> {
   await mkdir(path.join(dir, "assets/face-refs"), { recursive: true });
   await mkdir(path.join(dir, "assets/generated"), { recursive: true });
   await mkdir(path.join(dir, "posts/starter-post"), { recursive: true });
+  await mkdir(path.join(dir, "posts/starter-digest"), { recursive: true });
   await writeFile(path.join(dir, "brand/prompts/editorial.md"), "Generate {scene}");
   await writeFile(path.join(dir, "brand/fonts/tektur-900.ttf"), "font");
   await writeFile(path.join(dir, "posts/starter-post/post.md"), "---\nslug: starter\n---\n");
+  await writeFile(path.join(dir, "posts/starter-digest/post.md"), "---\nslug: starter-digest\n---\n");
   await writeFile(path.join(dir, "package.json"), "{}");
   return dir;
 }

@@ -19,6 +19,10 @@ describe("public onboarding docs", () => {
     expect(chatOnboarding).toContain("фото по пояс или в полный рост");
     expect(chatOnboarding).toContain("не выбирайте настроение обложки");
     expect(chatOnboarding).toContain("outdoor-editorial-arrow");
+    expect(chatOnboarding).toContain("private/brand.json");
+    expect(chatOnboarding).toContain("Выберите режим первого поста");
+    expect(chatOnboarding).toContain("Series Digest");
+    expect(chatOnboarding).toContain("posts/starter-digest/post.md");
     expect(chatOnboarding).not.toMatch(/superpowers/iu);
   });
 
@@ -44,5 +48,18 @@ describe("public onboarding docs", () => {
     expect(generatedReadme).toContain("не часть публичного репозитория");
     expect(visualPipeline).toContain("Объекты в generated scene выбираются");
     expect(visualPipeline).toContain("Стиль выбирается");
+  });
+
+  it("keeps the open GitHub guide aligned with the two-pipeline onboarding", async () => {
+    const guide = await readFile("docs/open-github-mvp.md", "utf8");
+
+    expect(guide).toContain("private/brand.json");
+    expect(guide).toContain("brand/voice.local.md");
+    expect(guide).toContain("Editorial / Artifact-Rich");
+    expect(guide).toContain("Series Digest");
+    expect(guide).toContain("posts/starter-digest/post.md");
+    expect(guide).toContain("npm run carousel -- build posts/starter-digest");
+    expect(guide).toContain("brand/tokens.ts");
+    expect(guide).toContain("should remain generic");
   });
 });
