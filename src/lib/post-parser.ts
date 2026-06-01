@@ -105,13 +105,72 @@ export type ParsedEditorialSlide = {
   visual?: EditorialVisualConfig;
 };
 
+export type DigestFeature = {
+  icon: string;
+  title: string;
+  desc: string;
+};
+
+export type DigestFlowStep = {
+  step: string;
+  desc: string;
+};
+
+export type DigestCompare = {
+  oldTitle?: string;
+  newTitle?: string;
+  old: readonly string[];
+  new: readonly string[];
+};
+
+export type DigestCtaLink = {
+  label: string;
+  url?: string;
+};
+
+export type ParsedDigestCoverSlide = {
+  kind: "digest-cover";
+  title: string;
+  subline?: string;
+  scrollCue?: string;
+  image?: string;
+};
+
+export type ParsedDigestUpdateSlide = {
+  kind: "digest-update";
+  badge?: string;
+  headline: string;
+  intro: string;
+  accentLines?: string;
+  image?: string;
+  bubble?: string;
+  features?: readonly DigestFeature[];
+  checklist?: readonly string[];
+  flow?: readonly DigestFlowStep[];
+  compare?: DigestCompare;
+};
+
+export type ParsedDigestCtaSlide = {
+  kind: "digest-cta";
+  headline: string;
+  accentLines?: string;
+  intro?: string;
+  benefits?: readonly DigestFeature[];
+  cta?: DigestCtaLink;
+  note?: string;
+  image?: string;
+};
+
 export type ParsedSlide =
   | CoverSlide
   | TextSlide
   | ParsedListSlide
   | ParsedImageSlide
   | ParsedQuoteSlide
-  | ParsedEditorialSlide;
+  | ParsedEditorialSlide
+  | ParsedDigestCoverSlide
+  | ParsedDigestUpdateSlide
+  | ParsedDigestCtaSlide;
 
 export type ParsedPost = {
   sourcePath?: string;
@@ -125,8 +184,13 @@ export type ParsePostMarkdownOptions = {
   postDir?: string;
 };
 
+type ObjectRecord = Record<string, string>;
 type FieldRecord = Record<string, string | readonly string[]>;
-type FieldValue = string | FieldRecord | ListSlideItem[];
+type FieldValue =
+  | string
+  | FieldRecord
+  | readonly string[]
+  | readonly ObjectRecord[];
 type FieldMap = Record<string, FieldValue>;
 
 export async function parsePostFile(inputPath: string): Promise<ParsedPost> {
@@ -320,6 +384,45 @@ function parseSlideBlock(block: SlideBlock): ParsedSlide {
     };
   }
 
+  if (block.kind === "digest-cover") {
+    return {
+      kind: "digest-cover",
+      title: requiredString(fields, "title", block.kind),
+      subline: optionalString(fields, "subline"),
+      scrollCue: optionalString(fields, "scroll-cue"),
+      image: optionalString(fields, "image"),
+    };
+  }
+
+  if (block.kind === "digest-update") {
+    return {
+      kind: "digest-update",
+      badge: optionalString(fields, "badge"),
+      headline: requiredString(fields, "headline", block.kind),
+      intro: requiredString(fields, "intro", block.kind),
+      accentLines: optionalString(fields, "accent-lines"),
+      image: optionalString(fields, "image"),
+      bubble: optionalString(fields, "bubble"),
+      features: optionalFeatures(fields, "features"),
+      checklist: optionalStringArray(fields, "checklist"),
+      flow: optionalFlowSteps(fields, "flow"),
+      compare: optionalCompare(fields, "compare"),
+    };
+  }
+
+  if (block.kind === "digest-cta") {
+    return {
+      kind: "digest-cta",
+      headline: requiredString(fields, "headline", block.kind),
+      accentLines: optionalString(fields, "accent-lines"),
+      intro: optionalString(fields, "intro"),
+      benefits: optionalFeatures(fields, "benefits"),
+      cta: optionalCtaLink(fields, "cta"),
+      note: optionalString(fields, "note"),
+      image: optionalString(fields, "image"),
+    };
+  }
+
   throw new Error(`Unknown slide block kind: ${block.kind}`);
 }
 
@@ -356,8 +459,7 @@ function parseFields(lines: readonly string[]): FieldMap {
 
     if (rawValue === "") {
       const { nestedLines, nextIndex } = collectIndentedLines(lines, index + 1, 0);
-      fields[key] =
-        key === "items" ? parseItems(nestedLines) : parseNestedRecord(stripIndent(nestedLines, 2), key);
+      fields[key] = parseBlockValue(key, nestedLines);
       index = nextIndex;
       continue;
     }
@@ -432,6 +534,36 @@ function parseItems(lines: readonly string[]): ListSlideItem[] {
         title: requiredRecordString(record, "title", "items"),
         desc: requiredRecordString(record, "desc", "items"),
       };
+    });
+}
+
+function parseBlockValue(key: string, nestedLines: readonly string[]): FieldValue {
+  if (key === "items") {
+    return parseItems(nestedLines);
+  }
+
+  const firstContent = nestedLines.find((line) => line.trim() !== "")?.trim();
+
+  if (firstContent?.startsWith("- {")) {
+    return parseObjectList(nestedLines);
+  }
+
+  if (firstContent?.startsWith("-")) {
+    return parseStringList(nestedLines, key);
+  }
+
+  return parseNestedRecord(stripIndent(nestedLines, 2), key);
+}
+
+function parseObjectList(lines: readonly string[]): readonly ObjectRecord[] {
+  return lines
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      if (!line.startsWith("- ")) {
+        throw new Error(`Cannot parse object list line: ${line}`);
+      }
+      return parseInlineObject(line.slice(2));
     });
 }
 
@@ -559,9 +691,16 @@ function requiredString(fields: FieldMap, key: string, blockKind: string): strin
   return value;
 }
 
-function optionalStringRecord(fields: FieldMap, key: string): Record<string, string> | undefined {
-  const value = fields[key];
+function asFieldRecord(value: FieldValue | undefined): FieldRecord | undefined {
   if (!value || typeof value === "string" || Array.isArray(value)) {
+    return undefined;
+  }
+  return value as FieldRecord;
+}
+
+function optionalStringRecord(fields: FieldMap, key: string): Record<string, string> | undefined {
+  const value = asFieldRecord(fields[key]);
+  if (!value) {
     return undefined;
   }
 
@@ -575,21 +714,117 @@ function optionalStringRecord(fields: FieldMap, key: string): Record<string, str
 }
 
 function requiredItems(fields: FieldMap, blockKind: string): readonly ListSlideItem[] {
-  const value = fields.items;
-  if (!Array.isArray(value) || value.length === 0) {
+  const list = asObjectList(fields.items);
+  if (!list || list.length === 0) {
     throw new Error(`Missing items in ${blockKind} slide`);
   }
-  return value;
+  return list.map((record) => toListSlideItem(record, "items"));
 }
 
 function optionalItems(fields: FieldMap): readonly ListSlideItem[] | undefined {
-  const value = fields.items;
+  const list = asObjectList(fields.items);
+  return list && list.length > 0 ? list.map((record) => toListSlideItem(record, "items")) : undefined;
+}
+
+function toListSlideItem(record: ObjectRecord, context: string): ListSlideItem {
+  return {
+    icon: requiredRecordString(record, "icon", context),
+    title: requiredRecordString(record, "title", context),
+    desc: requiredRecordString(record, "desc", context),
+  };
+}
+
+function asObjectList(value: FieldValue | undefined): readonly ObjectRecord[] | undefined {
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+  const allObjects = value.every(
+    (item) => item !== null && typeof item === "object" && !Array.isArray(item),
+  );
+  return allObjects ? (value as readonly ObjectRecord[]) : undefined;
+}
+
+function asStringList(value: FieldValue | undefined): readonly string[] | undefined {
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+  return value.every((item) => typeof item === "string")
+    ? (value as readonly string[])
+    : undefined;
+}
+
+function optionalFeatures(fields: FieldMap, key: string): readonly DigestFeature[] | undefined {
+  const list = asObjectList(fields[key]);
+  if (!list || list.length === 0) {
+    return undefined;
+  }
+  return list.map((record) => ({
+    icon: optionalRecordString(record, "icon") ?? "",
+    title: requiredRecordString(record, "title", key),
+    desc: optionalRecordString(record, "desc") ?? "",
+  }));
+}
+
+function optionalFlowSteps(fields: FieldMap, key: string): readonly DigestFlowStep[] | undefined {
+  const list = asObjectList(fields[key]);
+  if (!list || list.length === 0) {
+    return undefined;
+  }
+  return list.map((record) => ({
+    step: requiredRecordString(record, "step", key),
+    desc: optionalRecordString(record, "desc") ?? "",
+  }));
+}
+
+function optionalStringArray(fields: FieldMap, key: string): readonly string[] | undefined {
+  const list = asStringList(fields[key]);
+  return list && list.length > 0 ? list : undefined;
+}
+
+function optionalCompare(fields: FieldMap, key: string): DigestCompare | undefined {
+  const value = asFieldRecord(fields[key]);
+  if (!value) {
+    return undefined;
+  }
+  const oldList = recordStringList(value, "old");
+  const newList = recordStringList(value, "new");
+  if (!oldList && !newList) {
+    return undefined;
+  }
+  return {
+    oldTitle: readOptionalRecordString(value, "old-title"),
+    newTitle: readOptionalRecordString(value, "new-title"),
+    old: oldList ?? [],
+    new: newList ?? [],
+  };
+}
+
+function optionalCtaLink(fields: FieldMap, key: string): DigestCtaLink | undefined {
+  const value = asFieldRecord(fields[key]);
+  if (!value) {
+    return undefined;
+  }
+  const label = readOptionalRecordString(value, "label");
+  if (!label) {
+    return undefined;
+  }
+  const url = readOptionalRecordString(value, "url");
+  return url ? { label, url } : { label };
+}
+
+function recordStringList(record: FieldRecord, key: string): readonly string[] | undefined {
+  const value = record[key];
   return Array.isArray(value) && value.length > 0 ? value : undefined;
 }
 
+function optionalRecordString(record: ObjectRecord, key: string): string | undefined {
+  const value = record[key];
+  return typeof value === "string" && value.trim() ? value : undefined;
+}
+
 function optionalVisualConfig(fields: FieldMap): EditorialVisualConfig | undefined {
-  const value = fields.visual;
-  if (!value || typeof value === "string" || Array.isArray(value)) {
+  const value = asFieldRecord(fields.visual);
+  if (!value) {
     return undefined;
   }
 

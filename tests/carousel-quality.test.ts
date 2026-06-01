@@ -184,3 +184,44 @@ ${image}  primary: "правило отбора"
     - "боль читателя"
     - "рабочий артефакт"`;
 }
+
+describe("digest quality gate", () => {
+  it("passes a clean digest update slide with three distinct copy layers", () => {
+    const issues = validateCarouselQuality(parsePostMarkdown(`
+## digest-update
+badge: "СЪЁМКА"
+headline: |
+  СНИМАЮ ТОЛЬКО
+  ЖИВЫЕ КУСКИ
+intro: "Лицом записываю только начало и финал, остальное берётся из карточки текстом."
+features:
+  - { icon: lightning, title: "Пачка за подход", desc: "десять заходов подряд" }
+`));
+
+    expect(issues).toEqual([]);
+  });
+
+  it("flags a stop-list phrase inside a digest intro", () => {
+    const issues = validateCarouselQuality(parsePostMarkdown(`
+## digest-update
+headline: |
+  НОВЫЙ
+  ПОДХОД
+intro: "Это масштабируемое решение для любой команды."
+`));
+
+    expect(issues.map((issue) => issue.code)).toContain("stop-list-phrase");
+  });
+
+  it("flags a digest intro that just repeats the headline", () => {
+    const issues = validateCarouselQuality(parsePostMarkdown(`
+## digest-update
+headline: |
+  КАРТОЧКА
+  ВМЕСТО ЧАТА
+intro: "Карточка вместо чата хранит части ролика."
+`));
+
+    expect(issues.map((issue) => issue.code)).toContain("duplicate-text-layer");
+  });
+});

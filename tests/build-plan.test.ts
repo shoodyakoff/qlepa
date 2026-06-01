@@ -1,4 +1,6 @@
 import path from "node:path";
+import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { describe, expect, it } from "vitest";
 
 import { tokens } from "../brand/tokens";
@@ -133,5 +135,60 @@ describe("carousel build plan", () => {
     expect(url).toBe(
       "http://127.0.0.1:4173/render/text?heading=%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9+%D0%B7%D0%B0%D0%B3%D0%BE%D0%BB%D0%BE%D0%B2%D0%BE%D0%BA&body=Line+1%0ALine+2",
     );
+  });
+
+  it("routes digest slides, encodes a JSON data param, and resolves image paths", () => {
+    const post: ParsedPost = {
+      sourcePath: "/tmp/post/post.md",
+      postDir: "/tmp/post",
+      frontmatter: {},
+      slides: [
+        { kind: "digest-cover", title: "Cover", image: "../assets/generated/cover.png" },
+        {
+          kind: "digest-update",
+          headline: "ОДИН ПРОМПТ\nНЕ ДЕЛАЕТ РОЛИК",
+          intro: "Описательный абзац.",
+          features: [{ icon: "lightning", title: "Быстрее", desc: "меньше переделок" }],
+        },
+      ],
+    };
+
+    const plan = createCarouselBuildPlan({ post, projectRoot: "/tmp" });
+
+    expect(plan.requests[0]?.route).toBe("/render/digest-cover");
+    expect(plan.requests[0]?.outputPath).toBe(path.join("/tmp/post/out", "01-cover.png"));
+    expect(plan.requests[1]?.route).toBe("/render/digest-update");
+    expect(plan.requests[1]?.outputPath).toBe(path.join("/tmp/post/out", "02-slide.png"));
+
+    const coverData = JSON.parse(plan.requests[0]?.query.data ?? "{}");
+    expect(coverData.image).toBe(`/@fs/${path.resolve("/tmp/post", "../assets/generated/cover.png")}`);
+
+    const updateData = JSON.parse(plan.requests[1]?.query.data ?? "{}");
+    expect(updateData).toMatchObject({
+      kind: "digest-update",
+      headline: "ОДИН ПРОМПТ\nНЕ ДЕЛАЕТ РОЛИК",
+      features: [{ icon: "lightning", title: "Быстрее", desc: "меньше переделок" }],
+    });
+  });
+
+  it("uses ignored local brand chrome overrides when present", () => {
+    const projectRoot = mkdtempSync(path.join(tmpdir(), "qlepa-brand-"));
+    mkdirSync(path.join(projectRoot, "private"));
+    writeFileSync(
+      path.join(projectRoot, "private/brand.json"),
+      JSON.stringify({ handle: "@local_handle", toplineSuffix: "Local carousel workflow" }),
+    );
+
+    const post: ParsedPost = {
+      sourcePath: path.join(projectRoot, "posts/demo/post.md"),
+      postDir: path.join(projectRoot, "posts/demo"),
+      frontmatter: {},
+      slides: [{ kind: "digest-cover", title: "Cover" }],
+    };
+
+    const plan = createCarouselBuildPlan({ post, projectRoot });
+
+    expect(plan.requests[0]?.query.nickname).toBe("@local_handle");
+    expect(plan.requests[0]?.query.signature).toBe("тгк @local_handle");
   });
 });

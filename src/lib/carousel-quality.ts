@@ -1,5 +1,7 @@
 import type {
   EditorialVisualConfig,
+  ParsedDigestCtaSlide,
+  ParsedDigestUpdateSlide,
   ParsedEditorialSlide,
   ParsedPost,
 } from "./post-parser.ts";
@@ -91,6 +93,11 @@ export function validateCarouselQuality(post: ParsedPost): readonly CarouselQual
     | undefined;
 
   post.slides.forEach((slide, index) => {
+    if (slide.kind === "digest-update" || slide.kind === "digest-cta") {
+      issues.push(...validateDigestCopy(slide, index));
+      return;
+    }
+
     if (slide.kind !== "editorial") {
       return;
     }
@@ -186,6 +193,47 @@ function validateCopyLayers(
 
   if (hasDuplicateTextLayer(slide)) {
     issues.push(issue(slideIndex, "duplicate-text-layer", "headline, body, or visual labels repeat the same fact"));
+  }
+
+  return issues;
+}
+
+function validateDigestCopy(
+  slide: ParsedDigestUpdateSlide | ParsedDigestCtaSlide,
+  slideIndex: number,
+): readonly CarouselQualityIssue[] {
+  const issues: CarouselQualityIssue[] = [];
+  const features = slide.kind === "digest-update" ? slide.features : slide.benefits;
+  const featureTitles = (features ?? []).map((feature) => feature.title);
+  const featureDescs = (features ?? []).map((feature) => feature.desc).filter(hasText);
+  const intro = slide.kind === "digest-update" ? slide.intro : slide.intro ?? "";
+
+  const layers = [
+    { label: "headline", value: slide.headline },
+    { label: "intro", value: intro },
+    ...featureTitles.map((value) => ({ label: "feature", value })),
+    ...featureDescs.map((value) => ({ label: "feature", value })),
+  ];
+
+  for (const layer of layers) {
+    if (hasText(layer.value) && containsStopListPhrase(layer.value)) {
+      issues.push(issue(slideIndex, "stop-list-phrase", `${layer.label} contains a stop-list phrase`));
+    }
+  }
+
+  const headline = normalizeForComparison(slide.headline);
+  const introNormalized = normalizeForComparison(intro);
+
+  if (textsOverlap(headline, introNormalized)) {
+    issues.push(issue(slideIndex, "duplicate-text-layer", "digest headline and intro repeat the same fact"));
+  }
+
+  for (const title of featureTitles) {
+    const normalizedTitle = normalizeForComparison(title);
+    if (textsOverlap(normalizedTitle, headline) || textsOverlap(normalizedTitle, introNormalized)) {
+      issues.push(issue(slideIndex, "duplicate-text-layer", "digest feature label repeats headline or intro"));
+      break;
+    }
   }
 
   return issues;

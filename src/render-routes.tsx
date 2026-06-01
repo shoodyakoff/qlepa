@@ -1,12 +1,23 @@
 import type { ReactElement } from "react";
 
 import { Cover } from "../templates/Cover";
+import { DigestCover } from "../templates/DigestCover";
+import { DigestCta } from "../templates/DigestCta";
+import { DigestUpdate } from "../templates/DigestUpdate";
 import { EditorialSlide } from "../templates/EditorialSlide";
 import { FontSamplerSlide } from "../templates/FontSamplerSlide";
 import { ImageSlide } from "../templates/ImageSlide";
 import { ListSlide, type ListSlideItem } from "../templates/ListSlide";
 import { QuoteSlide } from "../templates/QuoteSlide";
 import { TextSlide } from "../templates/TextSlide";
+import {
+  isDigestCoverData,
+  isDigestCtaData,
+  isDigestUpdateData,
+  type DigestCoverData,
+  type DigestCtaData,
+  type DigestUpdateData,
+} from "../templates/digest-blocks";
 import type { EditorialVisualConfig } from "../templates/editorial-visuals";
 import { tokens } from "../brand/tokens";
 
@@ -18,7 +29,10 @@ export type RenderRoute = {
     | "ImageSlide"
     | "QuoteSlide"
     | "EditorialSlide"
-    | "FontSamplerSlide";
+    | "FontSamplerSlide"
+    | "DigestCover"
+    | "DigestUpdate"
+    | "DigestCta";
   path: `/render/${string}`;
   render: (params: URLSearchParams) => ReactElement;
 };
@@ -125,6 +139,46 @@ export const renderRoutes: readonly RenderRoute[] = [
     ),
   },
   {
+    name: "DigestCover",
+    path: "/render/digest-cover",
+    render: (params) => (
+      <DigestCover
+        data={readDigestData(params, isDigestCoverData, defaultDigestCover)}
+        nickname={params.get("nickname") ?? tokens.brand.handle}
+        slideNumber={readNumberParam(params, "slideNumber", 1)}
+        totalSlides={readNumberParam(params, "totalSlides", 7)}
+      />
+    ),
+  },
+  {
+    name: "DigestUpdate",
+    path: "/render/digest-update",
+    render: (params) => (
+      <DigestUpdate
+        data={readDigestData(params, isDigestUpdateData, defaultDigestUpdate)}
+        footerNote={params.get("footerNote") ?? undefined}
+        nickname={params.get("nickname") ?? tokens.brand.handle}
+        signature={params.get("signature") ?? undefined}
+        slideNumber={readNumberParam(params, "slideNumber", 2)}
+        totalSlides={readNumberParam(params, "totalSlides", 7)}
+      />
+    ),
+  },
+  {
+    name: "DigestCta",
+    path: "/render/digest-cta",
+    render: (params) => (
+      <DigestCta
+        data={readDigestData(params, isDigestCtaData, defaultDigestCta)}
+        footerNote={params.get("footerNote") ?? undefined}
+        nickname={params.get("nickname") ?? tokens.brand.handle}
+        signature={params.get("signature") ?? undefined}
+        slideNumber={readNumberParam(params, "slideNumber", 7)}
+        totalSlides={readNumberParam(params, "totalSlides", 7)}
+      />
+    ),
+  },
+  {
     name: "FontSamplerSlide",
     path: "/render/font-sampler",
     render: () => <FontSamplerSlide />,
@@ -180,6 +234,59 @@ function readVisualParam(params: URLSearchParams): EditorialVisualConfig | undef
 
   return undefined;
 }
+
+function readDigestData<T>(
+  params: URLSearchParams,
+  guard: (value: unknown) => value is T,
+  fallback: T,
+): T {
+  const raw = params.get("data");
+  if (!raw) {
+    return fallback;
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (guard(parsed)) {
+      return parsed;
+    }
+  } catch {
+    return fallback;
+  }
+
+  return fallback;
+}
+
+const defaultDigestCover: DigestCoverData = {
+  kind: "digest-cover",
+  title: "ЧТО НОВОГО\nВ ПАЙПЛАЙНЕ",
+  subline: "Собрал всё стоящее.",
+  scrollCue: "Листай →",
+};
+
+const defaultDigestUpdate: DigestUpdateData = {
+  kind: "digest-update",
+  badge: "ОБНОВЛЕНИЕ",
+  headline: "ОДИН ПРОМПТ\nНЕ ДЕЛАЕТ РОЛИК",
+  intro:
+    "Сложную задачу не закрыть одной командой. Нужен процесс, где у модели меньше места для фантазии.",
+  features: [
+    { icon: "lightning", title: "Быстрее", desc: "меньше ручных переделок" },
+    { icon: "target", title: "Точнее", desc: "каждый шаг задан заранее" },
+  ],
+};
+
+const defaultDigestCta: DigestCtaData = {
+  kind: "digest-cta",
+  headline: "10 РОЛИКОВ —\n10 МИНУТ",
+  intro: "Процесс на 60% автоматический, остальное — пока руками.",
+  benefits: [
+    { icon: "rocket", title: "Скорость", desc: "пачка за вечер" },
+    { icon: "check", title: "Контроль", desc: "проверяю результат" },
+  ],
+  cta: { label: "→ как собрать такой же" },
+  note: "Больше разборов — в канале.",
+};
 
 function isListSlideItem(value: unknown): value is ListSlideItem {
   if (!value || typeof value !== "object" || Array.isArray(value)) {

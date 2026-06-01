@@ -1,4 +1,5 @@
 import path from "node:path";
+import { existsSync, readFileSync } from "node:fs";
 
 import { tokens } from "../../brand/tokens.ts";
 import type { EditorialVisualConfig, ParsedPost, ParsedSlide, PostFrontmatter } from "./post-parser.ts";
@@ -10,7 +11,10 @@ export type RenderRoutePath =
   | "/render/list"
   | "/render/image"
   | "/render/quote"
-  | "/render/editorial";
+  | "/render/editorial"
+  | "/render/digest-cover"
+  | "/render/digest-update"
+  | "/render/digest-cta";
 
 export type CarouselRenderRequest = {
   route: RenderRoutePath;
@@ -33,7 +37,7 @@ export function createCarouselBuildPlan(options: CreateCarouselBuildPlanOptions)
   const postDir = resolvePostDir(options.post, options.projectRoot);
   const outDir = path.join(postDir, "out");
   const totalSlides = String(options.post.slides.length);
-  const chromeQuery = queryForChrome(options.post.frontmatter);
+  const chromeQuery = queryForChrome(options.post.frontmatter, options.projectRoot);
 
   return {
     outDir,
@@ -79,15 +83,69 @@ function resolvePostDir(post: ParsedPost, projectRoot: string): string {
   return projectRoot;
 }
 
-function queryForChrome(frontmatter: PostFrontmatter): Record<string, string> {
+type BrandChrome = {
+  handle: string;
+  pathFrom: string;
+  pathTo: string;
+  toplineSuffix: string;
+  signature: string;
+};
+
+function queryForChrome(frontmatter: PostFrontmatter, projectRoot: string): Record<string, string> {
+  const chrome = resolveBrandChrome(projectRoot);
+
   return withOptional({
-    nickname: tokens.brand.handle,
-    chromeFrom: tokens.brand.pathFrom,
-    chromeTo: tokens.brand.pathTo,
-    footerNote: tokens.brand.toplineSuffix,
-    signature: `тгк ${tokens.brand.handle}`,
+    nickname: chrome.handle,
+    chromeFrom: chrome.pathFrom,
+    chromeTo: chrome.pathTo,
+    footerNote: chrome.toplineSuffix,
+    signature: chrome.signature,
     showMethodNumber: isTruthy(frontmatter.headlineNumbering) ? "true" : undefined,
   });
+}
+
+function resolveBrandChrome(projectRoot: string): BrandChrome {
+  const base: BrandChrome = {
+    handle: tokens.brand.handle,
+    pathFrom: tokens.brand.pathFrom,
+    pathTo: tokens.brand.pathTo,
+    toplineSuffix: tokens.brand.toplineSuffix,
+    signature: `тгк ${tokens.brand.handle}`,
+  };
+  const local = readLocalBrandChrome(projectRoot);
+  const handle = local.handle ?? base.handle;
+
+  return {
+    handle,
+    pathFrom: local.pathFrom ?? base.pathFrom,
+    pathTo: local.pathTo ?? base.pathTo,
+    toplineSuffix: local.toplineSuffix ?? base.toplineSuffix,
+    signature: local.signature ?? `тгк ${handle}`,
+  };
+}
+
+function readLocalBrandChrome(projectRoot: string): Partial<BrandChrome> {
+  const filePath = path.join(projectRoot, "private/brand.json");
+  if (!existsSync(filePath)) {
+    return {};
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(readFileSync(filePath, "utf8"));
+    if (!isRecord(parsed)) {
+      return {};
+    }
+
+    return {
+      handle: optionalRecordString(parsed, "handle"),
+      pathFrom: optionalRecordString(parsed, "pathFrom"),
+      pathTo: optionalRecordString(parsed, "pathTo"),
+      toplineSuffix: optionalRecordString(parsed, "toplineSuffix"),
+      signature: optionalRecordString(parsed, "signature"),
+    };
+  } catch {
+    return {};
+  }
 }
 
 function routeForSlide(slide: ParsedSlide): RenderRoutePath {
@@ -111,12 +169,25 @@ function routeForSlide(slide: ParsedSlide): RenderRoutePath {
     return "/render/editorial";
   }
 
+  if (slide.kind === "digest-cover") {
+    return "/render/digest-cover";
+  }
+
+  if (slide.kind === "digest-update") {
+    return "/render/digest-update";
+  }
+
+  if (slide.kind === "digest-cta") {
+    return "/render/digest-cta";
+  }
+
   return "/render/quote";
 }
 
 function outputFileName(slide: ParsedSlide, index: number): string {
   const prefix = String(index + 1).padStart(2, "0");
-  return slide.kind === "cover" ? `${prefix}-cover.png` : `${prefix}-slide.png`;
+  const isCover = slide.kind === "cover" || slide.kind === "digest-cover";
+  return isCover ? `${prefix}-cover.png` : `${prefix}-slide.png`;
 }
 
 function queryForSlide(slide: ParsedSlide, postDir: string): Record<string, string> {
@@ -166,6 +237,15 @@ function queryForSlide(slide: ParsedSlide, postDir: string): Record<string, stri
       items: slide.items ? JSON.stringify(slide.items) : undefined,
       visual: slide.visual ? JSON.stringify(resolveVisualAssetUrls(slide.visual, postDir)) : undefined,
     });
+  }
+
+  if (
+    slide.kind === "digest-cover" ||
+    slide.kind === "digest-update" ||
+    slide.kind === "digest-cta"
+  ) {
+    const resolved = { ...slide, image: resolveAssetUrl(slide.image, postDir) };
+    return { data: JSON.stringify(resolved) };
   }
 
   return withOptional({
@@ -222,4 +302,13 @@ function withOptional(values: Record<string, string | undefined>): Record<string
 
 function isTruthy(value: string | undefined): boolean {
   return value === "true" || value === "1" || value === "yes";
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function optionalRecordString(record: Record<string, unknown>, key: string): string | undefined {
+  const value = record[key];
+  return typeof value === "string" && value.trim() ? value : undefined;
 }

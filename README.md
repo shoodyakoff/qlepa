@@ -244,8 +244,20 @@ pnpm test
 - `.env`;
 - `brand/voice.local.md`.
 
+## Два пайплайна
+
+В репозитории два независимых пайплайна каруселей: **Editorial / Artifact-Rich** (процесс, разбор, build-log — типы `cover` / `slide-editorial` и др.) и **Series Digest** (новостной дайджест «что нового» в стиле сквозного маскота — типы `digest-cover` / `digest-update` / `digest-cta`). Какой когда использовать — в [docs/pipelines.md](docs/pipelines.md). Не смешивайте типы слайдов разных пайплайнов в одном посте.
+
+Проверить новый пайплайн без личных картинок можно на публичном примере:
+
+```bash
+npm run carousel -- build posts/starter-digest
+```
+
 ## Дополнительные документы
 
+- [Два пайплайна: что когда использовать](docs/pipelines.md)
+- [Series Digest pipeline](docs/series-digest-pipeline.md)
 - [Онбординг через чат](docs/chat-onboarding.md)
 - [Подсказки для Codex / Claude](docs/agent-dialogue.md)
 - [Artifact-rich carousel pipeline](docs/artifact-rich-carousel-pipeline.md)

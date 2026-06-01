@@ -1,3 +1,4 @@
+import type { ReactElement } from "react";
 import { describe, expect, it } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 
@@ -13,8 +14,69 @@ describe("render routes", () => {
       "/render/image",
       "/render/quote",
       "/render/editorial",
+      "/render/digest-cover",
+      "/render/digest-update",
+      "/render/digest-cta",
       "/render/font-sampler",
     ]);
+  });
+
+  it("renders digest routes from a JSON data param", () => {
+    const update = getRenderRoute("/render/digest-update");
+    const data = {
+      kind: "digest-update",
+      headline: "ОДИН ПРОМПТ\nНЕ ДЕЛАЕТ РОЛИК",
+      intro: "Описательный абзац про процесс.",
+      features: [{ icon: "lightning", title: "Быстрее", desc: "меньше переделок" }],
+    };
+
+    const element = update?.render(new URLSearchParams({ data: JSON.stringify(data) }));
+
+    expect(element).toMatchObject({ props: { data } });
+    expect(getRenderRoute("/render/digest-cover")?.name).toBe("DigestCover");
+    expect(getRenderRoute("/render/digest-cta")?.name).toBe("DigestCta");
+  });
+
+  it("falls back to a default digest sample when the data param is missing", () => {
+    const element = getRenderRoute("/render/digest-update")?.render(new URLSearchParams());
+    expect(element).toBeDefined();
+    const markup = renderToStaticMarkup(element as ReactElement);
+
+    expect(markup).toContain("digest-update");
+    expect(markup).toContain("digest-headline");
+  });
+
+  it("passes local nickname chrome into digest routes", () => {
+    const element = getRenderRoute("/render/digest-cover")?.render(
+      new URLSearchParams({
+        nickname: "@local_handle",
+        data: JSON.stringify({ kind: "digest-cover", title: "10\nРОЛИКОВ" }),
+      }),
+    );
+
+    const markup = renderToStaticMarkup(element as ReactElement);
+
+    expect(markup).toContain("@local_handle");
+    expect(markup).not.toContain(tokens.brand.handle);
+  });
+
+  it("passes local footer signature chrome into digest routes", () => {
+    const data = {
+      kind: "digest-update",
+      headline: "ОДИН ПРОМПТ\nНЕ ДЕЛАЕТ РОЛИК",
+      intro: "Описательный абзац про процесс.",
+    };
+    const element = getRenderRoute("/render/digest-update")?.render(
+      new URLSearchParams({
+        data: JSON.stringify(data),
+        signature: "тгк @local_handle",
+      }),
+    );
+
+    const markup = renderToStaticMarkup(element as ReactElement);
+
+    expect(markup).toContain("тгк @local_handle");
+    expect(markup).not.toContain(`тгк ${tokens.brand.handle}`);
   });
 
   it("looks up the text slide route by pathname", () => {

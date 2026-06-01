@@ -12,6 +12,13 @@ Local checkout folder may remain `/Users/stanislav/Documents/Repos/images-codex`
 - For non-trivial product or implementation work, use the local problem-first workflow in `docs/agentic-mode.md`.
 - Keep the original user pain separate from derived specs. A passing implementation must solve the original problem, not only match a task list.
 
+## Pipelines
+
+- Two independent carousel pipelines share the renderer, tokens, and fonts. Pick one per post; do not mix their slide kinds.
+- **Editorial / Artifact-Rich** (default): process, build-log, educational, case-study posts. Slide kinds `cover`, `slide-editorial`, `slide-text`, `slide-list`, `slide-image`, `slide-quote`. Docs: `CAROUSEL_PLAYBOOK.md`, `docs/artifact-rich-carousel-pipeline.md`, `docs/carousel-art-director.md`.
+- **Series Digest**: "что нового" news-digest series with a recurring mascot, navy + orange headlines, benefit-icon rows, speech bubbles, how-it-works flow, old→new comparison, and a CTA slide. Slide kinds `digest-cover`, `digest-update`, `digest-cta`. Doc: `docs/series-digest-pipeline.md`. Use the descriptive 2–3 sentence register in `intro` (not the telegram register), keep headline / intro / feature labels as three distinct facts.
+- Index of both, with when-to-use guidance: `docs/pipelines.md`.
+
 ## Author Voice
 
 - Before writing or editing any slide copy, read `brand/voice.md` for the generic rules.

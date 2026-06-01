@@ -179,3 +179,94 @@ visual:
     });
   });
 });
+
+describe("digest slide kinds", () => {
+  it("parses digest-cover, digest-update, and digest-cta with nested blocks", () => {
+    const post = parsePostMarkdown(`
+## digest-cover
+title: |
+  10 РОЛИКОВ
+  ЗА ВЕЧЕР
+subline: "Контент-заводик, а не один промпт."
+scroll-cue: "Листай →"
+image: "../../assets/generated/cover.png"
+
+## digest-update
+badge: "СЪЁМКА"
+headline: |
+  СНИМАЮ ТОЛЬКО
+  ЖИВЫЕ КУСКИ
+intro: "Лицом записываю только начало и финал."
+bubble: "Это заводик, не магия"
+image: "../../assets/generated/mascot.png"
+features:
+  - { icon: lightning, title: "Быстрее", desc: "меньше переделок" }
+  - { icon: target, title: "Точнее", desc: "шаги заданы" }
+flow:
+  - { step: "Карточка", desc: "в базе" }
+  - { step: "Сборка", desc: "по правилам" }
+checklist:
+  - "Меньше переделок"
+compare:
+  old-title: "Всё лицом"
+  old:
+    - "Долго"
+  new-title: "Только hook и CTA"
+  new:
+    - "Пачка за подход"
+
+## digest-cta
+headline: |
+  10 РОЛИКОВ —
+  10 МИНУТ
+intro: "Процесс на 60% автоматический."
+benefits:
+  - { icon: rocket, title: "Скорость", desc: "за вечер" }
+cta:
+  label: "→ как собрать"
+  url: "https://example.com"
+note: "Разборы — в канале."
+`);
+
+    expect(post.slides).toMatchObject([
+      {
+        kind: "digest-cover",
+        title: "10 РОЛИКОВ\nЗА ВЕЧЕР",
+        subline: "Контент-заводик, а не один промпт.",
+        scrollCue: "Листай →",
+        image: "../../assets/generated/cover.png",
+      },
+      {
+        kind: "digest-update",
+        badge: "СЪЁМКА",
+        headline: "СНИМАЮ ТОЛЬКО\nЖИВЫЕ КУСКИ",
+        intro: "Лицом записываю только начало и финал.",
+        bubble: "Это заводик, не магия",
+        image: "../../assets/generated/mascot.png",
+        features: [
+          { icon: "lightning", title: "Быстрее", desc: "меньше переделок" },
+          { icon: "target", title: "Точнее", desc: "шаги заданы" },
+        ],
+        flow: [
+          { step: "Карточка", desc: "в базе" },
+          { step: "Сборка", desc: "по правилам" },
+        ],
+        checklist: ["Меньше переделок"],
+        compare: {
+          oldTitle: "Всё лицом",
+          old: ["Долго"],
+          newTitle: "Только hook и CTA",
+          new: ["Пачка за подход"],
+        },
+      },
+      {
+        kind: "digest-cta",
+        headline: "10 РОЛИКОВ —\n10 МИНУТ",
+        intro: "Процесс на 60% автоматический.",
+        benefits: [{ icon: "rocket", title: "Скорость", desc: "за вечер" }],
+        cta: { label: "→ как собрать", url: "https://example.com" },
+        note: "Разборы — в канале.",
+      },
+    ]);
+  });
+});
